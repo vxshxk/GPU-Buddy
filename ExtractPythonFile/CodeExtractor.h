@@ -14,7 +14,16 @@ namespace CodeExtractor {
             return false;
         }
         std::string line;
+        size_t i;
         while (std::getline(inputFile, line)) {
+            if (line[0]==' '){
+                for (i=0;i<line.length();i++){
+                if (line[i]!=' '){
+                    break;
+                }
+                }
+                if (line[i]=='!') continue;
+            }
             if (!line.empty() && line[0] != '!') {
                 code.push_back(line);  
             }
