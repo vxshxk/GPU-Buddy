@@ -7,14 +7,14 @@ service FileShare {
 }
 
 message InputFile {
-    int32 id = 1;
-    string name = 2;
-    string meta = 3;
-    string code = 4;
+    int32 id = 1; \\ line number
+    string name = 2; \\ file name
+    string meta = 3; \\ meta information
+    string code = 4; \\ line of code or shell command
 }
 
 message Output {
-    int32 id = 1;
-    string name = 2;
-    string output = 3;
+    int32 id = 1; \\ output line number
+    string name = 2; \\ file name
+    string output = 3; \\ line of output
 }
