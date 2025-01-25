@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace CodeExtractor {
-    bool extractPythonCode(std::string& FilePath, std::vector<std::string>& code) {
+    bool extractPythonCode(std::string& FilePath, std::vector<std::string>& code, std::vector<std::string>& commands) {
         std::ifstream inputFile(FilePath);
         if (!inputFile.is_open()) {
             std::cerr << "Error: Unable to open file " << FilePath << std::endl;
@@ -26,6 +26,9 @@ namespace CodeExtractor {
             }
             if (!line.empty() && line[0] != '!') {
                 code.push_back(line);  
+            }
+            else if (!line.empty() && line[0] == '!') {
+                commands.push_back(line.substr(1));  
             }
         }
         inputFile.close();
