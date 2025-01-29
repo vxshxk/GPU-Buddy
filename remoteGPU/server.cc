@@ -23,7 +23,7 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
         Status UploadFile (ServerContext* context, const File* request, FileID* reply) override {
             std::vector<std::string> code;
             std::vector<std::string> commands;
-            
+
             int cur_id = id.fetch_add(1, std::memory_order_relaxed); 
             std::string OutputFilePath = "output" + std::to_string(cur_id) + ".py";
             std::string OutputScriptPath = "commands" + std::to_string(cur_id) + ".sh";
@@ -36,6 +36,8 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             }
 
             CodeRestorer::writePythonCode(OutputFilePath, OutputScriptPath, code, commands);
+
+            index[cur_id] = std::make_pair(OutputFilePath, OutputScriptPath);
             reply->set_id(cur_id);
 
             return Status::OK;
