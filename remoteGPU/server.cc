@@ -20,6 +20,7 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
         RemoteGPUServiceImpl () {
             this->id = 0;
         }
+
         Status UploadFile (ServerContext* context, const File* request, FileID* reply) override {
             std::vector<std::string> code;
             std::vector<std::string> commands;
@@ -42,6 +43,35 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
 
             return Status::OK;
         }
+        
+        Status DownloadFile (ServerContext* context, const FileID* request, File* reply) override {
+            int cur_id = request->id();
+            auto it = index.find(cur_id);
+            if (it != index.end()) {
+                std::vector<std::string> code;
+                std::vector<std::string> commands;
+
+                std::string OutputFilePath = it->second.first;
+                std::string OutputScriptPath = it->second.second;
+
+                CodeExtractor::extractPythonScriptCode(OutputFilePath, OutputScriptPath, code, commands);
+
+                for (const auto& line: code) {
+                    reply->add_code(line);
+                }
+                for (const auto& command: commands) {
+                    reply->add_commands(command);
+                }
+
+                return Status::OK;
+            }
+            else {
+                return Status(grpc::NOT_FOUND, "File not found.");
+            }
+        }
+
+        // Yet to implement Execute rpc
+
     private:
         std::atomic<int> id;
         std::unordered_map<int, std::pair<std::string, std::string>> index;
