@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example;
+
+service RemoteGPU {
+  rpc SendStrings (File) returns (StringResponse);
+}
+
+message File {
+  repeated string code = 1;
+  repeated string commands = 2;
+}
+
+message StringResponse {
+  string message = 1;
+  
+}

@@ -1,0 +1,4 @@
+/root/gpu1/build/CMakeFiles/server.dir
+/root/gpu1/build/CMakeFiles/client.dir
+/root/gpu1/build/CMakeFiles/edit_cache.dir
+/root/gpu1/build/CMakeFiles/rebuild_cache.dir
