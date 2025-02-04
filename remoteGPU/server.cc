@@ -15,6 +15,8 @@ using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
 
+const std::string PREFIX_PATH = "../../";
+
 class RemoteGPUServiceImpl final : public RemoteGPU::Service {
     public:
         RemoteGPUServiceImpl () {
@@ -26,8 +28,8 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             std::vector<std::string> commands;
 
             int cur_id = id.fetch_add(1, std::memory_order_relaxed); 
-            std::string OutputFilePath = "output" + std::to_string(cur_id) + ".py";
-            std::string OutputScriptPath = "commands" + std::to_string(cur_id) + ".sh";
+            std::string OutputFilePath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".py";
+            std::string OutputScriptPath = PREFIX_PATH + "commands" + std::to_string(cur_id) + ".sh";
 
             for (const auto& line : request->code()) {
                 code.push_back(line);

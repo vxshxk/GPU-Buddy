@@ -67,7 +67,7 @@ namespace CodeExtractor {
             return false;
         }
         std::string command;
-        size_t i;
+        i;
         while (std::getline(inputScriptFile, command)) {
             if (command[0] == ' '){
                 for (i=0;i<command.length();i++){

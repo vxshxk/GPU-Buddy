@@ -2,6 +2,8 @@
 #include <grpcpp/grpcpp.h>
 
 #include "remote_gpu.grpc.pb.h"
+#include "CodeExtractor.h"
+#include "CodeRestorer.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -11,6 +13,8 @@ using remoteGPU::RemoteGPU;
 using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
+
+const std::string PREFIX_PATH = "../../";
 
 class RemoteGPUClient {
 public:
@@ -49,14 +53,17 @@ public:
 
         if (status.ok()) {
             std::cout << "Downloaded file (ID: " << file_id << "):\n";
-            std::cout << "--- Code ---\n";
+            std::vector<std::string> code;
+            std::vector<std::string> commands;
             for (const auto& line : reply.code()) {
-                std::cout << line << std::endl;
+                code.push_back(line);
             }
-            std::cout << "--- Commands ---\n";
             for (const auto& command : reply.commands()) {
-                std::cout << command << std::endl;
+                commands.push_back(command);
             }
+            std::string OutputFilePath = PREFIX_PATH + "test_code" + std::to_string(file_id) + ".py";
+            std::string OutputScriptPath = PREFIX_PATH + "test_script" + std::to_string(file_id) + ".sh";
+            CodeRestorer::writePythonCode(OutputFilePath, OutputScriptPath, code, commands);
         } else {
             std::cerr << "Download failed: " << status.error_message() << std::endl;
         }
@@ -69,14 +76,15 @@ private:
 int main(int argc, char** argv) {
     RemoteGPUClient client(grpc::CreateChannel("localhost:50052", grpc::InsecureChannelCredentials()));
 
-//For Sample we use 
-    std::vector<std::string> code = {"print('Hello, World!')", "x = 10", "print(x)"};
-    std::vector<std::string> commands = {"python3 script.py"};
+    std::string InputFilePath = PREFIX_PATH + "input.py";
+    std::vector<std::string> code;
+    std::vector<std::string> commands;
+    CodeExtractor::extractPythonCode(InputFilePath, code, commands);
 
     int file_id = client.UploadFile(code, commands);
-    if (file_id != -1) {
-        client.DownloadFile(file_id);
-    }
+    std::cout << file_id <<std::endl;
+
+    client.DownloadFile(file_id);
 
     return 0;
 }
