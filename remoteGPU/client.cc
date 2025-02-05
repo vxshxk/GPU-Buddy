@@ -76,7 +76,12 @@ private:
 int main(int argc, char** argv) {
     RemoteGPUClient client(grpc::CreateChannel("localhost:50052", grpc::InsecureChannelCredentials()));
 
-    std::string InputFilePath = PREFIX_PATH + "input.py";
+    std::string file_name;
+
+    std::cout << "Enter file name: ";
+    std::cin >> file_name;
+
+    std::string InputFilePath = PREFIX_PATH + file_name;
     std::vector<std::string> code;
     std::vector<std::string> commands;
     CodeExtractor::extractPythonCode(InputFilePath, code, commands);
