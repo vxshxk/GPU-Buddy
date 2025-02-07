@@ -1,8 +1,3 @@
-!pip install flask
-
-import flask
-
-!pip install requests
 !pip install numpy
 
 import numpy as np

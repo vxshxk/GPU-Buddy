@@ -61,9 +61,35 @@ public:
             for (const auto& command : reply.commands()) {
                 commands.push_back(command);
             }
-            std::string OutputFilePath = PREFIX_PATH + "test_code" + std::to_string(file_id) + ".py";
-            std::string OutputScriptPath = PREFIX_PATH + "test_script" + std::to_string(file_id) + ".sh";
+            std::string OutputFilePath = PREFIX_PATH + "client_code" + std::to_string(file_id) + ".py";
+            std::string OutputScriptPath = PREFIX_PATH + "client_script" + std::to_string(file_id) + ".sh";
             CodeRestorer::writePythonCode(OutputFilePath, OutputScriptPath, code, commands);
+        } else {
+            std::cerr << "Download failed: " << status.error_message() << std::endl;
+        }
+    }
+
+    void Execute(int file_id) {
+        FileID request;
+        request.set_id(file_id);
+
+        Output reply;
+        ClientContext context;
+        Status status = stub_->Execute(&context, request, &reply);
+
+        if (status.ok()) {
+            std::cout << "Executed file (ID: " << file_id << "):\n";
+            std::vector<std::string> output;
+
+            for (const auto& line : reply.out()) {
+                output.push_back(line);
+            }
+
+            std::cout << "Output:\n";
+            for (const auto& line: output) {
+                std::cout << line << std::endl;
+            }            
+
         } else {
             std::cerr << "Download failed: " << status.error_message() << std::endl;
         }
@@ -87,9 +113,11 @@ int main(int argc, char** argv) {
     CodeExtractor::extractPythonCode(InputFilePath, code, commands);
 
     int file_id = client.UploadFile(code, commands);
-    std::cout << file_id <<std::endl;
+    std::cout << file_id << std::endl;
 
     client.DownloadFile(file_id);
+
+    client.Execute(file_id);
 
     return 0;
 }

@@ -22,7 +22,10 @@ namespace CodeExtractor {
                         break;
                     }
                 }
-                if (line[i] == '!') continue;
+                if (line[i] == '!'){
+                    commands.push_back(line.substr(i+1));
+                    continue;
+                } 
             }
             if (!line.empty() && line[0] != '!') {
                 code.push_back(line);  
