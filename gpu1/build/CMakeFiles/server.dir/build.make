@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/gpu1
+CMAKE_SOURCE_DIR = /root/GPU-Buddy/gpu1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/gpu1/build
+CMAKE_BINARY_DIR = /root/GPU-Buddy/gpu1/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/server.dir/depend.make
@@ -70,46 +70,46 @@ include CMakeFiles/server.dir/progress.make
 include CMakeFiles/server.dir/flags.make
 
 CMakeFiles/server.dir/server.cpp.o: CMakeFiles/server.dir/flags.make
-CMakeFiles/server.dir/server.cpp.o: /root/gpu1/server.cpp
+CMakeFiles/server.dir/server.cpp.o: /root/GPU-Buddy/gpu1/server.cpp
 CMakeFiles/server.dir/server.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/server.dir/server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server.cpp.o -MF CMakeFiles/server.dir/server.cpp.o.d -o CMakeFiles/server.dir/server.cpp.o -c /root/gpu1/server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/GPU-Buddy/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/server.dir/server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server.cpp.o -MF CMakeFiles/server.dir/server.cpp.o.d -o CMakeFiles/server.dir/server.cpp.o -c /root/GPU-Buddy/gpu1/server.cpp
 
 CMakeFiles/server.dir/server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server.dir/server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/gpu1/server.cpp > CMakeFiles/server.dir/server.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/GPU-Buddy/gpu1/server.cpp > CMakeFiles/server.dir/server.cpp.i
 
 CMakeFiles/server.dir/server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/gpu1/server.cpp -o CMakeFiles/server.dir/server.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/GPU-Buddy/gpu1/server.cpp -o CMakeFiles/server.dir/server.cpp.s
 
 CMakeFiles/server.dir/gpu.pb.cc.o: CMakeFiles/server.dir/flags.make
-CMakeFiles/server.dir/gpu.pb.cc.o: /root/gpu1/gpu.pb.cc
+CMakeFiles/server.dir/gpu.pb.cc.o: /root/GPU-Buddy/gpu1/gpu.pb.cc
 CMakeFiles/server.dir/gpu.pb.cc.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/server.dir/gpu.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/gpu.pb.cc.o -MF CMakeFiles/server.dir/gpu.pb.cc.o.d -o CMakeFiles/server.dir/gpu.pb.cc.o -c /root/gpu1/gpu.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/GPU-Buddy/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/server.dir/gpu.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/gpu.pb.cc.o -MF CMakeFiles/server.dir/gpu.pb.cc.o.d -o CMakeFiles/server.dir/gpu.pb.cc.o -c /root/GPU-Buddy/gpu1/gpu.pb.cc
 
 CMakeFiles/server.dir/gpu.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server.dir/gpu.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/gpu1/gpu.pb.cc > CMakeFiles/server.dir/gpu.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/GPU-Buddy/gpu1/gpu.pb.cc > CMakeFiles/server.dir/gpu.pb.cc.i
 
 CMakeFiles/server.dir/gpu.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/gpu.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/gpu1/gpu.pb.cc -o CMakeFiles/server.dir/gpu.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/GPU-Buddy/gpu1/gpu.pb.cc -o CMakeFiles/server.dir/gpu.pb.cc.s
 
 CMakeFiles/server.dir/gpu.grpc.pb.cc.o: CMakeFiles/server.dir/flags.make
-CMakeFiles/server.dir/gpu.grpc.pb.cc.o: /root/gpu1/gpu.grpc.pb.cc
+CMakeFiles/server.dir/gpu.grpc.pb.cc.o: /root/GPU-Buddy/gpu1/gpu.grpc.pb.cc
 CMakeFiles/server.dir/gpu.grpc.pb.cc.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/server.dir/gpu.grpc.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/gpu.grpc.pb.cc.o -MF CMakeFiles/server.dir/gpu.grpc.pb.cc.o.d -o CMakeFiles/server.dir/gpu.grpc.pb.cc.o -c /root/gpu1/gpu.grpc.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/root/GPU-Buddy/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/server.dir/gpu.grpc.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/gpu.grpc.pb.cc.o -MF CMakeFiles/server.dir/gpu.grpc.pb.cc.o.d -o CMakeFiles/server.dir/gpu.grpc.pb.cc.o -c /root/GPU-Buddy/gpu1/gpu.grpc.pb.cc
 
 CMakeFiles/server.dir/gpu.grpc.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server.dir/gpu.grpc.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/gpu1/gpu.grpc.pb.cc > CMakeFiles/server.dir/gpu.grpc.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/GPU-Buddy/gpu1/gpu.grpc.pb.cc > CMakeFiles/server.dir/gpu.grpc.pb.cc.i
 
 CMakeFiles/server.dir/gpu.grpc.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/gpu.grpc.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/gpu1/gpu.grpc.pb.cc -o CMakeFiles/server.dir/gpu.grpc.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/GPU-Buddy/gpu1/gpu.grpc.pb.cc -o CMakeFiles/server.dir/gpu.grpc.pb.cc.s
 
 # Object files for target server
 server_OBJECTS = \
@@ -218,7 +218,7 @@ server: /usr/local/lib/libssl.a
 server: /usr/local/lib/libcrypto.a
 server: /usr/local/lib/libaddress_sorting.a
 server: CMakeFiles/server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/root/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/root/GPU-Buddy/gpu1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -230,6 +230,6 @@ CMakeFiles/server.dir/clean:
 .PHONY : CMakeFiles/server.dir/clean
 
 CMakeFiles/server.dir/depend:
-	cd /root/gpu1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/gpu1 /root/gpu1 /root/gpu1/build /root/gpu1/build /root/gpu1/build/CMakeFiles/server.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /root/GPU-Buddy/gpu1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/GPU-Buddy/gpu1 /root/GPU-Buddy/gpu1 /root/GPU-Buddy/gpu1/build /root/GPU-Buddy/gpu1/build /root/GPU-Buddy/gpu1/build/CMakeFiles/server.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/server.dir/depend
 

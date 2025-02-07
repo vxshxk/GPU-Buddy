@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/gpu1/gpu.grpc.pb.cc" "CMakeFiles/server.dir/gpu.grpc.pb.cc.o" "gcc" "CMakeFiles/server.dir/gpu.grpc.pb.cc.o.d"
-  "/root/gpu1/gpu.pb.cc" "CMakeFiles/server.dir/gpu.pb.cc.o" "gcc" "CMakeFiles/server.dir/gpu.pb.cc.o.d"
-  "/root/gpu1/server.cpp" "CMakeFiles/server.dir/server.cpp.o" "gcc" "CMakeFiles/server.dir/server.cpp.o.d"
+  "/root/GPU-Buddy/gpu1/gpu.grpc.pb.cc" "CMakeFiles/server.dir/gpu.grpc.pb.cc.o" "gcc" "CMakeFiles/server.dir/gpu.grpc.pb.cc.o.d"
+  "/root/GPU-Buddy/gpu1/gpu.pb.cc" "CMakeFiles/server.dir/gpu.pb.cc.o" "gcc" "CMakeFiles/server.dir/gpu.pb.cc.o.d"
+  "/root/GPU-Buddy/gpu1/server.cpp" "CMakeFiles/server.dir/server.cpp.o" "gcc" "CMakeFiles/server.dir/server.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

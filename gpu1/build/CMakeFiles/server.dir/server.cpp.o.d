@@ -1,4 +1,4 @@
-CMakeFiles/server.dir/server.cpp.o: /root/gpu1/server.cpp \
+CMakeFiles/server.dir/server.cpp.o: /root/GPU-Buddy/gpu1/server.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13/iostream \
  /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
@@ -425,8 +425,9 @@ CMakeFiles/server.dir/server.cpp.o: /root/gpu1/server.cpp \
  /usr/local/include/grpcpp/impl/server_builder_plugin.h \
  /usr/local/include/grpcpp/security/authorization_policy_provider.h \
  /usr/local/include/grpcpp/server_posix.h \
- /usr/local/include/grpcpp/version_info.h /root/gpu1/gpu.grpc.pb.h \
- /root/gpu1/gpu.pb.h /usr/local/include/google/protobuf/port_def.inc \
+ /usr/local/include/grpcpp/version_info.h \
+ /root/GPU-Buddy/gpu1/gpu.grpc.pb.h /root/GPU-Buddy/gpu1/gpu.pb.h \
+ /usr/local/include/google/protobuf/port_def.inc \
  /usr/local/include/google/protobuf/port_undef.inc \
  /usr/local/include/google/protobuf/io/coded_stream.h \
  /usr/local/include/google/protobuf/stubs/common.h \
@@ -559,7 +560,7 @@ CMakeFiles/server.dir/server.cpp.o: /root/gpu1/server.cpp \
  /usr/local/include/grpcpp/support/proto_buffer_reader.h \
  /usr/local/include/grpcpp/support/proto_buffer_writer.h \
  /usr/local/include/grpcpp/support/stub_options.h \
- /root/gpu1/CodeRestorer.h /usr/include/c++/13/fstream \
+ /root/GPU-Buddy/gpu1/CodeRestorer.h /usr/include/c++/13/fstream \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
  /usr/include/c++/13/bits/fstream.tcc

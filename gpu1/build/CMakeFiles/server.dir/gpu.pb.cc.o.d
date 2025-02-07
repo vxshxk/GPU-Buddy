@@ -1,5 +1,5 @@
-CMakeFiles/server.dir/gpu.pb.cc.o: /root/gpu1/gpu.pb.cc \
- /usr/include/stdc-predef.h /root/gpu1/gpu.pb.h \
+CMakeFiles/server.dir/gpu.pb.cc.o: /root/GPU-Buddy/gpu1/gpu.pb.cc \
+ /usr/include/stdc-predef.h /root/GPU-Buddy/gpu1/gpu.pb.h \
  /usr/include/c++/13/limits \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \

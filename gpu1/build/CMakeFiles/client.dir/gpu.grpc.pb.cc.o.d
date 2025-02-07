@@ -1,6 +1,6 @@
-CMakeFiles/client.dir/gpu.grpc.pb.cc.o: /root/gpu1/gpu.grpc.pb.cc \
- /usr/include/stdc-predef.h /root/gpu1/gpu.pb.h \
- /usr/include/c++/13/limits \
+CMakeFiles/client.dir/gpu.grpc.pb.cc.o: \
+ /root/GPU-Buddy/gpu1/gpu.grpc.pb.cc /usr/include/stdc-predef.h \
+ /root/GPU-Buddy/gpu1/gpu.pb.h /usr/include/c++/13/limits \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -442,7 +442,8 @@ CMakeFiles/client.dir/gpu.grpc.pb.cc.o: /root/gpu1/gpu.grpc.pb.cc \
  /usr/local/include/google/protobuf/message.h \
  /usr/local/include/google/protobuf/map.h \
  /usr/local/include/google/protobuf/map_type_handler.h \
- /usr/local/include/google/protobuf/reflection.h /root/gpu1/gpu.grpc.pb.h \
+ /usr/local/include/google/protobuf/reflection.h \
+ /root/GPU-Buddy/gpu1/gpu.grpc.pb.h \
  /usr/local/include/grpcpp/generic/async_generic_service.h \
  /usr/local/include/grpc/support/port_platform.h \
  /usr/include/linux/version.h \

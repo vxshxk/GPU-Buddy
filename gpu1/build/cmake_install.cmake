@@ -1,4 +1,4 @@
-# Install script for directory: /root/gpu1
+# Install script for directory: /root/GPU-Buddy/gpu1
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/root/gpu1/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/root/GPU-Buddy/gpu1/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
