@@ -19,10 +19,12 @@
 #include <grpcpp/server_context.h>
 #include <grpcpp/impl/service_type.h>
 #include <grpcpp/support/sync_stream.h>
-namespace example {
+namespace remoteGPU {
 
 static const char* RemoteGPU_method_names[] = {
-  "/example.RemoteGPU/SendStrings",
+  "/remoteGPU.RemoteGPU/UploadFile",
+  "/remoteGPU.RemoteGPU/DownloadFile",
+  "/remoteGPU.RemoteGPU/Execute",
 };
 
 std::unique_ptr< RemoteGPU::Stub> RemoteGPU::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -32,28 +34,76 @@ std::unique_ptr< RemoteGPU::Stub> RemoteGPU::NewStub(const std::shared_ptr< ::gr
 }
 
 RemoteGPU::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_SendStrings_(RemoteGPU_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_UploadFile_(RemoteGPU_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DownloadFile_(RemoteGPU_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Execute_(RemoteGPU_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status RemoteGPU::Stub::SendStrings(::grpc::ClientContext* context, const ::example::File& request, ::example::StringResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::example::File, ::example::StringResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SendStrings_, context, request, response);
+::grpc::Status RemoteGPU::Stub::UploadFile(::grpc::ClientContext* context, const ::remoteGPU::File& request, ::remoteGPU::FileID* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::remoteGPU::File, ::remoteGPU::FileID, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_UploadFile_, context, request, response);
 }
 
-void RemoteGPU::Stub::async::SendStrings(::grpc::ClientContext* context, const ::example::File* request, ::example::StringResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::example::File, ::example::StringResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SendStrings_, context, request, response, std::move(f));
+void RemoteGPU::Stub::async::UploadFile(::grpc::ClientContext* context, const ::remoteGPU::File* request, ::remoteGPU::FileID* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::remoteGPU::File, ::remoteGPU::FileID, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadFile_, context, request, response, std::move(f));
 }
 
-void RemoteGPU::Stub::async::SendStrings(::grpc::ClientContext* context, const ::example::File* request, ::example::StringResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SendStrings_, context, request, response, reactor);
+void RemoteGPU::Stub::async::UploadFile(::grpc::ClientContext* context, const ::remoteGPU::File* request, ::remoteGPU::FileID* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_UploadFile_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::example::StringResponse>* RemoteGPU::Stub::PrepareAsyncSendStringsRaw(::grpc::ClientContext* context, const ::example::File& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::example::StringResponse, ::example::File, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SendStrings_, context, request);
+::grpc::ClientAsyncResponseReader< ::remoteGPU::FileID>* RemoteGPU::Stub::PrepareAsyncUploadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::File& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::remoteGPU::FileID, ::remoteGPU::File, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_UploadFile_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::example::StringResponse>* RemoteGPU::Stub::AsyncSendStringsRaw(::grpc::ClientContext* context, const ::example::File& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::remoteGPU::FileID>* RemoteGPU::Stub::AsyncUploadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::File& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncSendStringsRaw(context, request, cq);
+    this->PrepareAsyncUploadFileRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status RemoteGPU::Stub::DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::remoteGPU::File* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::remoteGPU::FileID, ::remoteGPU::File, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DownloadFile_, context, request, response);
+}
+
+void RemoteGPU::Stub::async::DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::remoteGPU::FileID, ::remoteGPU::File, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DownloadFile_, context, request, response, std::move(f));
+}
+
+void RemoteGPU::Stub::async::DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DownloadFile_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::remoteGPU::File>* RemoteGPU::Stub::PrepareAsyncDownloadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::remoteGPU::File, ::remoteGPU::FileID, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DownloadFile_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::remoteGPU::File>* RemoteGPU::Stub::AsyncDownloadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncDownloadFileRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status RemoteGPU::Stub::Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::remoteGPU::Output* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::remoteGPU::FileID, ::remoteGPU::Output, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Execute_, context, request, response);
+}
+
+void RemoteGPU::Stub::async::Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::remoteGPU::FileID, ::remoteGPU::Output, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Execute_, context, request, response, std::move(f));
+}
+
+void RemoteGPU::Stub::async::Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Execute_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>* RemoteGPU::Stub::PrepareAsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::remoteGPU::Output, ::remoteGPU::FileID, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Execute_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>* RemoteGPU::Stub::AsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncExecuteRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -62,19 +112,53 @@ RemoteGPU::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       RemoteGPU_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< RemoteGPU::Service, ::example::File, ::example::StringResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< RemoteGPU::Service, ::remoteGPU::File, ::remoteGPU::FileID, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](RemoteGPU::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::example::File* req,
-             ::example::StringResponse* resp) {
-               return service->SendStrings(ctx, req, resp);
+             const ::remoteGPU::File* req,
+             ::remoteGPU::FileID* resp) {
+               return service->UploadFile(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      RemoteGPU_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< RemoteGPU::Service, ::remoteGPU::FileID, ::remoteGPU::File, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](RemoteGPU::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::remoteGPU::FileID* req,
+             ::remoteGPU::File* resp) {
+               return service->DownloadFile(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      RemoteGPU_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< RemoteGPU::Service, ::remoteGPU::FileID, ::remoteGPU::Output, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](RemoteGPU::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::remoteGPU::FileID* req,
+             ::remoteGPU::Output* resp) {
+               return service->Execute(ctx, req, resp);
              }, this)));
 }
 
 RemoteGPU::Service::~Service() {
 }
 
-::grpc::Status RemoteGPU::Service::SendStrings(::grpc::ServerContext* context, const ::example::File* request, ::example::StringResponse* response) {
+::grpc::Status RemoteGPU::Service::UploadFile(::grpc::ServerContext* context, const ::remoteGPU::File* request, ::remoteGPU::FileID* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status RemoteGPU::Service::DownloadFile(::grpc::ServerContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status RemoteGPU::Service::Execute(::grpc::ServerContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response) {
   (void) context;
   (void) request;
   (void) response;
@@ -82,5 +166,5 @@ RemoteGPU::Service::~Service() {
 }
 
 
-}  // namespace example
+}  // namespace remoteGPU
 
