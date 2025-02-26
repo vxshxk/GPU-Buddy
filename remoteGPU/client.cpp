@@ -2,8 +2,8 @@
 #include <memory>
 #include <grpcpp/grpcpp.h>
 #include "gpu.grpc.pb.h"
-#include "CodeExtractor.h"
-#include "CodeRestorer.h"
+#include "headers/CodeExtractor.h"
+#include "headers/CodeRestorer.h"
 
 using grpc::Channel;
 using grpc::ClientContext;

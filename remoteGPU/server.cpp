@@ -1,8 +1,8 @@
 #include <iostream>
 #include <grpcpp/grpcpp.h>
 #include "gpu.grpc.pb.h"
-#include "CodeExtractor.h"
-#include "CodeRestorer.h"
+#include "headers/CodeExtractor.h"
+#include "headers/CodeRestorer.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -34,7 +34,8 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
                 code.push_back(line);
             }
             for (const auto& command : request->commands()) {
-                commands.push_back(command);
+                std::string NewCommand = CodeExtractor::extractPackageName(command);
+                commands.push_back(NewCommand);
             }
 
             CodeRestorer::writePythonCode(OutputFilePath, OutputScriptPath, code, commands);
@@ -79,10 +80,10 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
                 std::string ScriptPath = it->second.second;
 
                 std::string SetEnvironment = "python -m venv env && . env/bin/activate";
-                std::string RunScript = "chmod +x " + ScriptPath + " && ./" + ScriptPath;
+                std::string RunScript = "chmod +x " + ScriptPath + " && ./" + ScriptPath ;
                 std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
-                std::string RunCode = "python " + FilePath + " > " + OutputPath;
-                std::string CloseEnvironment = "deactivate";
+                std::string RunCode = "python " + FilePath + " > " + OutputPath ;
+                std::string CloseEnvironment = "deactivate ";
                 
                 std::string TerminalExecute = SetEnvironment + " && " + RunScript + " && " + RunCode + " && " + CloseEnvironment;
                 

@@ -3,11 +3,10 @@
 
 CMakeFiles/client.dir/client.cpp.o
  /root/GPU-Buddy/remoteGPU/client.cpp
- /root/GPU-Buddy/gpu1/CodeExtractor.h
- /root/GPU-Buddy/gpu1/CodeRestorer.h
- /root/GPU-Buddy/gpu1/client.cpp
- /root/GPU-Buddy/gpu1/gpu.grpc.pb.h
- /root/GPU-Buddy/gpu1/gpu.pb.h
+ /root/GPU-Buddy/remoteGPU/CodeExtractor.h
+ /root/GPU-Buddy/remoteGPU/CodeRestorer.h
+ /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.h
+ /root/GPU-Buddy/remoteGPU/gpu.pb.h
  /usr/include/alloca.h
  /usr/include/arpa/inet.h
  /usr/include/asm-generic/bitsperlong.h
@@ -692,9 +691,8 @@ CMakeFiles/client.dir/client.cpp.o
 
 CMakeFiles/client.dir/gpu.grpc.pb.cc.o
  /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.cc
- /root/GPU-Buddy/gpu1/gpu.grpc.pb.cc
- /root/GPU-Buddy/gpu1/gpu.grpc.pb.h
- /root/GPU-Buddy/gpu1/gpu.pb.h
+ /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.h
+ /root/GPU-Buddy/remoteGPU/gpu.pb.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h
@@ -1304,8 +1302,7 @@ CMakeFiles/client.dir/gpu.grpc.pb.cc.o
 
 CMakeFiles/client.dir/gpu.pb.cc.o
  /root/GPU-Buddy/remoteGPU/gpu.pb.cc
- /root/GPU-Buddy/gpu1/gpu.pb.cc
- /root/GPU-Buddy/gpu1/gpu.pb.h
+ /root/GPU-Buddy/remoteGPU/gpu.pb.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h
