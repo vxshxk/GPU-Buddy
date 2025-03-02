@@ -1,9 +1,8 @@
-#include <bits/stdc++.h>
+#include <iostream>
 #include <grpcpp/grpcpp.h>
-
-#include "remote_gpu.grpc.pb.h"
-#include "CodeExtractor.h"
-#include "CodeRestorer.h"
+#include "gpu.grpc.pb.h"
+#include "headers/CodeExtractor.h"
+#include "headers/CodeRestorer.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -14,6 +13,8 @@ using remoteGPU::RemoteGPU;
 using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
+
+const std::string PREFIX_PATH = "../../";
 
 class RemoteGPUServiceImpl final : public RemoteGPU::Service {
     public:
@@ -26,14 +27,15 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             std::vector<std::string> commands;
 
             int cur_id = id.fetch_add(1, std::memory_order_relaxed); 
-            std::string OutputFilePath = "output" + std::to_string(cur_id) + ".py";
-            std::string OutputScriptPath = "commands" + std::to_string(cur_id) + ".sh";
+            std::string OutputFilePath = PREFIX_PATH + "server_code" + std::to_string(cur_id) + ".py";
+            std::string OutputScriptPath = PREFIX_PATH + "server_script" + std::to_string(cur_id) + ".sh";
 
             for (const auto& line : request->code()) {
                 code.push_back(line);
             }
             for (const auto& command : request->commands()) {
-                commands.push_back(command);
+                std::string NewCommand = CodeExtractor::extractPackageName(command);
+                commands.push_back(NewCommand);
             }
 
             CodeRestorer::writePythonCode(OutputFilePath, OutputScriptPath, code, commands);
@@ -70,7 +72,47 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             }
         }
 
-        // Yet to implement Execute rpc
+        Status Execute (ServerContext* context, const FileID* request, Output* reply) override {
+            int cur_id = request->id();
+            auto it = index.find(cur_id);
+            if (it != index.end()) {
+                std::string FilePath = it->second.first;
+                std::string ScriptPath = it->second.second;
+
+                std::string SetEnvironment = "python -m venv env && . env/bin/activate";
+                std::string RunScript = "chmod +x " + ScriptPath + " && ./" + ScriptPath ;
+                std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
+                std::string RunCode = "python " + FilePath + " > " + OutputPath ;
+                std::string CloseEnvironment = "deactivate ";
+                
+                std::string TerminalExecute = SetEnvironment + " && " + RunScript + " && " + RunCode + " && " + CloseEnvironment;
+                
+                system(TerminalExecute.c_str());
+                
+                std::fstream file(OutputPath);
+                if (!file.is_open()) {
+                    return Status(grpc::UNAVAILABLE, "No output");
+                }
+
+                std::vector<std::string> output;
+                std::string line;
+
+                while (std::getline(file, line)) {
+                    output.push_back(line); 
+                }
+
+                file.close();
+
+                for (const auto& line : output) {
+                    reply->add_out(line);
+                }
+
+                return Status::OK;
+            }
+            else {
+                return Status(grpc::NOT_FOUND, "File not found.");
+            }
+        }
 
     private:
         std::atomic<int> id;
@@ -93,6 +135,5 @@ void RunServer() {
 
 int main(int argc, char** argv) {
     RunServer();
-
     return 0;
 }
