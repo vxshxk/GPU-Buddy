@@ -18,7 +18,3 @@ RUN mkdir -p /deps/grpc/build && cd /deps/grpc/build && \
     make -j8 install
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1
-
-RUN git clone https://github.com/vxshxk/GPU-Buddy.git
-
-RUN cd GPU-Buddy && ./build_script.sh 
