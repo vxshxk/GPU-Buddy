@@ -18,3 +18,14 @@ RUN mkdir -p /deps/grpc/build && cd /deps/grpc/build && \
     make -j8 install
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1
+
+# Pass the token securely as an argument
+ARG GITHUB_TOKEN
+
+# Clone the private repository into a specific directory in the container
+RUN git clone https://$GITHUB_TOKEN@github.com/vxshxk/GPU-Buddy.git /GPU-Buddy
+
+WORKDIR /GPU-Buddy
+RUN git checkout Server
+RUN chmod +x build_script.sh && chmod +x run_server.sh && chmod +x run_client.sh
+RUN ./build_script.sh
