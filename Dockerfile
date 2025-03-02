@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y cmake build-essential git python3.12 python3-pip iproute2
+RUN apt-get update && apt-get install -y cmake build-essential git python3.12 python3-pip iproute2 python3.12-venv protobuf-compiler libprotobuf-dev
 
 # Set the working directory for gRPC installation
 WORKDIR /deps
