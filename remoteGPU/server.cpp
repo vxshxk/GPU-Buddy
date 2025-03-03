@@ -78,17 +78,13 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             if (it != index.end()) {
                 std::string FilePath = it->second.first;
                 std::string ScriptPath = it->second.second;
-
-                std::string SetEnvironment = "python -m venv env && . env/bin/activate";
-                std::string RunScript = "chmod +x " + ScriptPath + " && ./" + ScriptPath ;
                 std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
-                std::string RunCode = "python " + FilePath + " > " + OutputPath ;
-                std::string CloseEnvironment = "deactivate ";
-                
-                std::string TerminalExecute = SetEnvironment + " && " + RunScript + " && " + RunCode + " && " + CloseEnvironment;
-                
+                std::string SetEnvironment = "python -m venv env";
+                std::string PythonBin = "./env/bin/python";
+                std::string RunScript = "chmod +x " + ScriptPath + " && bash " + ScriptPath;       
+                std::string RunCode = "python " + FilePath + " > " + OutputPath;
+                std::string TerminalExecute = SetEnvironment + " && " + RunScript + " && " + RunCode ;
                 system(TerminalExecute.c_str());
-                
                 std::fstream file(OutputPath);
                 if (!file.is_open()) {
                     return Status(grpc::UNAVAILABLE, "No output");

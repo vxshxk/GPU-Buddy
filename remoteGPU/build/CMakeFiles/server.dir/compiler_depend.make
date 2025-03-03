@@ -1128,10 +1128,10 @@ CMakeFiles/server.dir/gpu.pb.cc.o: /root/GPU-Buddy/remoteGPU/gpu.pb.cc \
   /usr/local/include/google/protobuf/wire_format_lite.h
 
 CMakeFiles/server.dir/server.cpp.o: /root/GPU-Buddy/remoteGPU/server.cpp \
-  /root/GPU-Buddy/remoteGPU/CodeExtractor.h \
-  /root/GPU-Buddy/remoteGPU/CodeRestorer.h \
   /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.h \
   /root/GPU-Buddy/remoteGPU/gpu.pb.h \
+  /root/GPU-Buddy/remoteGPU/headers/CodeExtractor.h \
+  /root/GPU-Buddy/remoteGPU/headers/CodeRestorer.h \
   /usr/include/alloca.h \
   /usr/include/arpa/inet.h \
   /usr/include/asm-generic/bitsperlong.h \
@@ -1833,8 +1833,6 @@ CMakeFiles/server.dir/server.cpp.o: /root/GPU-Buddy/remoteGPU/server.cpp \
 
 /usr/local/include/grpcpp/passive_listener.h:
 
-/usr/local/include/grpcpp/impl/server_builder_plugin.h:
-
 /usr/local/include/grpcpp/impl/channel_argument_option.h:
 
 /usr/local/include/grpcpp/health_check_service_interface.h:
@@ -1895,7 +1893,11 @@ CMakeFiles/server.dir/server.cpp.o: /root/GPU-Buddy/remoteGPU/server.cpp \
 
 /usr/include/arpa/inet.h:
 
-/root/GPU-Buddy/remoteGPU/CodeRestorer.h:
+/root/GPU-Buddy/remoteGPU/headers/CodeRestorer.h:
+
+/usr/local/include/grpcpp/impl/server_builder_plugin.h:
+
+/root/GPU-Buddy/remoteGPU/headers/CodeExtractor.h:
 
 /root/GPU-Buddy/remoteGPU/server.cpp:
 
@@ -2764,8 +2766,6 @@ CMakeFiles/server.dir/server.cpp.o: /root/GPU-Buddy/remoteGPU/server.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/local/include/absl/base/attributes.h:
-
-/root/GPU-Buddy/remoteGPU/CodeExtractor.h:
 
 /usr/local/include/grpcpp/support/interceptor.h:
 

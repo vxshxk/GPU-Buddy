@@ -1131,10 +1131,10 @@ CMakeFiles/server.dir/gpu.pb.cc.o
 
 CMakeFiles/server.dir/server.cpp.o
  /root/GPU-Buddy/remoteGPU/server.cpp
- /root/GPU-Buddy/remoteGPU/CodeExtractor.h
- /root/GPU-Buddy/remoteGPU/CodeRestorer.h
  /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.h
  /root/GPU-Buddy/remoteGPU/gpu.pb.h
+ /root/GPU-Buddy/remoteGPU/headers/CodeExtractor.h
+ /root/GPU-Buddy/remoteGPU/headers/CodeRestorer.h
  /usr/include/alloca.h
  /usr/include/arpa/inet.h
  /usr/include/asm-generic/bitsperlong.h
