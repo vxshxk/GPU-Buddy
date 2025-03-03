@@ -14,7 +14,7 @@ using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
 
-const std::string PREFIX_PATH = "../";
+const std::string PREFIX_PATH = "../../";
 
 class RemoteGPUServiceImpl final : public RemoteGPU::Service {
     public:
@@ -78,10 +78,10 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             if (it != index.end()) {
                 std::string FilePath = it->second.first;
                 std::string ScriptPath = it->second.second;
+                std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
 
                 std::string SetEnvironment = "python -m venv env && . env/bin/activate";
                 std::string RunScript = "chmod +x " + ScriptPath + " && ./" + ScriptPath ;
-                std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
                 std::string RunCode = "python " + FilePath + " > " + OutputPath ;
                 std::string CloseEnvironment = "deactivate ";
                 

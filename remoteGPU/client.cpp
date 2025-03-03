@@ -14,7 +14,7 @@ using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
 
-const std::string PREFIX_PATH = "../";
+const std::string PREFIX_PATH = "../../";
 
 class RemoteGPUClient {
 public:

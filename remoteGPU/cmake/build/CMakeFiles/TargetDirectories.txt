@@ -1,4 +1,0 @@
-/home/rijul/Documents/ACM/project-test/GPU-Buddy/remoteGPU/cmake/build/CMakeFiles/client.dir
-/home/rijul/Documents/ACM/project-test/GPU-Buddy/remoteGPU/cmake/build/CMakeFiles/server.dir
-/home/rijul/Documents/ACM/project-test/GPU-Buddy/remoteGPU/cmake/build/CMakeFiles/edit_cache.dir
-/home/rijul/Documents/ACM/project-test/GPU-Buddy/remoteGPU/cmake/build/CMakeFiles/rebuild_cache.dir
