@@ -1,8 +1,7 @@
 #!/bin/bash
-
-protoc -I=protos/ --cpp_out=remoteGPU/ protos/gpu.proto
-protoc -I=protos/ --grpc_out=remoteGPU/ --plugin=psrotoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin protos/gpu.proto
-
+cd proto
+protoc -I. --cpp_out=../remoteGPU --grpc_out=../remoteGPU   --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin gpu.proto
+cd ..
 cd remoteGPU
 mkdir -p cmake/build
 cd cmake/build
