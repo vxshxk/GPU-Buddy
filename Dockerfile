@@ -30,7 +30,7 @@ RUN git clone https://$GITHUB_TOKEN@github.com/vxshxk/GPU-Buddy.git /GPU-Buddy
 WORKDIR /GPU-Buddy
 ARG CACHE_BREAK=0
 RUN git fetch
-RUN git checkout scriptfix
+
 
 RUN chmod +x build_script.sh && chmod +x run_server.sh && chmod +x run_client.sh
 RUN ./build_script.sh
