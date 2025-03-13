@@ -18,3 +18,4 @@ RUN mkdir -p /deps/grpc/build && cd /deps/grpc/build && \
     make -j8 install
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1
+EXPOSE 50052
