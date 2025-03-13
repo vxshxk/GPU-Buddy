@@ -73,25 +73,19 @@ public:
         FileID request;
         request.set_id(file_id);
 
-        Output reply;
         ClientContext context;
-        Status status = stub_->Execute(&context, request, &reply);
+        std::unique_ptr<grpc::ClientReader<Output>> reader(stub_->Execute(&context, request));
 
-        if (status.ok()) {
-            std::cout << "Executed file (ID: " << file_id << "):\n";
-            std::vector<std::string> output;
+        Output response;
+        std::cout << "Execution Output (ID: " << file_id << "):\n";
+        while (reader->Read(&response)) {
+            std::string output_line(response.out().begin(), response.out().end()); 
+            std::cout << output_line << std::flush;
+        }
 
-            for (const auto& line : reply.out()) {
-                output.push_back(line);
-            }
-
-            std::cout << "Output:\n";
-            for (const auto& line: output) {
-                std::cout << line << std::endl;
-            }            
-
-        } else {
-            std::cerr << "Download failed: " << status.error_message() << std::endl;
+        Status status = reader->Finish();
+        if (!status.ok()) {
+            std::cerr << "Execution failed: " << status.error_message() << std::endl;
         }
     }
 

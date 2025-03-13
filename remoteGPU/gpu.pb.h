@@ -223,26 +223,20 @@ class Output final
   enum : int {
     kOutFieldNumber = 1,
   };
-  // repeated string out = 1;
-  int out_size() const;
-  private:
-  int _internal_out_size() const;
-
-  public:
+  // bytes out = 1;
   void clear_out() ;
-  const std::string& out(int index) const;
-  std::string* mutable_out(int index);
+  const std::string& out() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_out(int index, Arg_&& value, Args_... args);
-  std::string* add_out();
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void add_out(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<std::string>& out() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* mutable_out();
+  void set_out(Arg_&& arg, Args_... args);
+  std::string* mutable_out();
+  PROTOBUF_NODISCARD std::string* release_out();
+  void set_allocated_out(std::string* value);
 
   private:
-  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_out() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_out();
+  const std::string& _internal_out() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_out(
+      const std::string& value);
+  std::string* _internal_mutable_out();
 
   public:
   // @@protoc_insertion_point(class_scope:remoteGPU.Output)
@@ -251,7 +245,7 @@ class Output final
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      28, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -268,7 +262,7 @@ class Output final
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Output& from_msg);
-    ::google::protobuf::RepeatedPtrField<std::string> out_;
+    ::google::protobuf::internal::ArenaStringPtr out_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -868,68 +862,52 @@ inline void FileID::_internal_set_id(::int32_t value) {
 
 // Output
 
-// repeated string out = 1;
-inline int Output::_internal_out_size() const {
-  return _internal_out().size();
-}
-inline int Output::out_size() const {
-  return _internal_out_size();
-}
+// bytes out = 1;
 inline void Output::clear_out() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.out_.Clear();
+  _impl_.out_.ClearToEmpty();
 }
-inline std::string* Output::add_out() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  std::string* _s = _internal_mutable_out()->Add();
-  // @@protoc_insertion_point(field_add_mutable:remoteGPU.Output.out)
-  return _s;
-}
-inline const std::string& Output::out(int index) const
+inline const std::string& Output::out() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:remoteGPU.Output.out)
-  return _internal_out().Get(index);
-}
-inline std::string* Output::mutable_out(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:remoteGPU.Output.out)
-  return _internal_mutable_out()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void Output::set_out(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(
-      *_internal_mutable_out()->Mutable(index),
-      std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:remoteGPU.Output.out)
-}
-template <typename Arg_, typename... Args_>
-inline void Output::add_out(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_out(),
-                               std::forward<Arg_>(value),
-                               args... );
-  // @@protoc_insertion_point(field_add:remoteGPU.Output.out)
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-Output::out() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:remoteGPU.Output.out)
   return _internal_out();
 }
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-Output::mutable_out() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:remoteGPU.Output.out)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Output::set_out(Arg_&& arg,
+                                                     Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_out();
+  _impl_.out_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:remoteGPU.Output.out)
 }
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-Output::_internal_out() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.out_;
+inline std::string* Output::mutable_out() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_out();
+  // @@protoc_insertion_point(field_mutable:remoteGPU.Output.out)
+  return _s;
 }
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-Output::_internal_mutable_out() {
+inline const std::string& Output::_internal_out() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.out_;
+  return _impl_.out_.Get();
+}
+inline void Output::_internal_set_out(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.out_.Set(value, GetArena());
+}
+inline std::string* Output::_internal_mutable_out() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.out_.Mutable( GetArena());
+}
+inline std::string* Output::release_out() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:remoteGPU.Output.out)
+  return _impl_.out_.Release();
+}
+inline void Output::set_allocated_out(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.out_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.out_.IsDefault()) {
+    _impl_.out_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:remoteGPU.Output.out)
 }
 
 #ifdef __GNUC__

@@ -72,36 +72,28 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
             }
         }
 
-        Status Execute (ServerContext* context, const FileID* request, Output* reply) override {
+        Status Execute(ServerContext* context, const FileID* request, grpc::ServerWriter<Output>* writer) override {
             int cur_id = request->id();
             auto it = index.find(cur_id);
             if (it != index.end()) {
                 std::string FilePath = it->second.first;
                 std::string ScriptPath = it->second.second;
-                std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
                 std::string RunScript = "chmod +x " + ScriptPath + " && bash " + ScriptPath;       
-                std::string RunCode = "python " + FilePath + " > " + OutputPath;
+                std::string RunCode = "python " + FilePath + " 2>&1";
                 std::string TerminalExecute =  RunScript + " && " + RunCode ;
-                system(TerminalExecute.c_str());
-                std::fstream file(OutputPath);
-                if (!file.is_open()) {
-                    return Status(grpc::UNAVAILABLE, "No output");
+                FILE* pipe = popen(TerminalExecute.c_str(), "r");
+                if (!pipe) {
+                    return Status(grpc::INTERNAL, "Failed to execute script.");
                 }
+                char buffer[1024];
+                while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+                    Output response;
+                    response.set_out(std::string(buffer, strlen(buffer)));  
+                    writer->Write(response);
+                    }
+                pclose(pipe);
 
-                std::vector<std::string> output;
-                std::string line;
-
-                while (std::getline(file, line)) {
-                    output.push_back(line); 
-                }
-
-                file.close();
-
-                for (const auto& line : output) {
-                    reply->add_out(line);
-                }
-
-                return Status::OK;
+                    return Status::OK;
             }
             else {
                 return Status(grpc::NOT_FOUND, "File not found.");

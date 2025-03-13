@@ -49,12 +49,14 @@ class RemoteGPU final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::File>> PrepareAsyncDownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::File>>(PrepareAsyncDownloadFileRaw(context, request, cq));
     }
-    virtual ::grpc::Status Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::remoteGPU::Output* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::Output>> AsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::Output>>(AsyncExecuteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::remoteGPU::Output>> Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::remoteGPU::Output>>(ExecuteRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::Output>> PrepareAsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::Output>>(PrepareAsyncExecuteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::remoteGPU::Output>> AsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::remoteGPU::Output>>(AsyncExecuteRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::remoteGPU::Output>> PrepareAsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::remoteGPU::Output>>(PrepareAsyncExecuteRaw(context, request, cq));
     }
     class async_interface {
      public:
@@ -63,8 +65,7 @@ class RemoteGPU final {
       virtual void UploadFile(::grpc::ClientContext* context, const ::remoteGPU::File* request, ::remoteGPU::FileID* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::grpc::ClientReadReactor< ::remoteGPU::Output>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -74,8 +75,9 @@ class RemoteGPU final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::FileID>* PrepareAsyncUploadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::File& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::File>* AsyncDownloadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::File>* PrepareAsyncDownloadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::Output>* AsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::remoteGPU::Output>* PrepareAsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::remoteGPU::Output>* ExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::remoteGPU::Output>* AsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::remoteGPU::Output>* PrepareAsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -94,12 +96,14 @@ class RemoteGPU final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::remoteGPU::File>> PrepareAsyncDownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::remoteGPU::File>>(PrepareAsyncDownloadFileRaw(context, request, cq));
     }
-    ::grpc::Status Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::remoteGPU::Output* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>> AsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>>(AsyncExecuteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReader< ::remoteGPU::Output>> Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::remoteGPU::Output>>(ExecuteRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>> PrepareAsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>>(PrepareAsyncExecuteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::remoteGPU::Output>> AsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::remoteGPU::Output>>(AsyncExecuteRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::remoteGPU::Output>> PrepareAsyncExecute(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::remoteGPU::Output>>(PrepareAsyncExecuteRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
@@ -108,8 +112,7 @@ class RemoteGPU final {
       void UploadFile(::grpc::ClientContext* context, const ::remoteGPU::File* request, ::remoteGPU::FileID* response, ::grpc::ClientUnaryReactor* reactor) override;
       void DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response, std::function<void(::grpc::Status)>) override;
       void DownloadFile(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response, std::function<void(::grpc::Status)>) override;
-      void Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void Execute(::grpc::ClientContext* context, const ::remoteGPU::FileID* request, ::grpc::ClientReadReactor< ::remoteGPU::Output>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -125,8 +128,9 @@ class RemoteGPU final {
     ::grpc::ClientAsyncResponseReader< ::remoteGPU::FileID>* PrepareAsyncUploadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::File& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::remoteGPU::File>* AsyncDownloadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::remoteGPU::File>* PrepareAsyncDownloadFileRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>* AsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::remoteGPU::Output>* PrepareAsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::remoteGPU::Output>* ExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request) override;
+    ::grpc::ClientAsyncReader< ::remoteGPU::Output>* AsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::remoteGPU::Output>* PrepareAsyncExecuteRaw(::grpc::ClientContext* context, const ::remoteGPU::FileID& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_UploadFile_;
     const ::grpc::internal::RpcMethod rpcmethod_DownloadFile_;
     const ::grpc::internal::RpcMethod rpcmethod_Execute_;
@@ -139,7 +143,7 @@ class RemoteGPU final {
     virtual ~Service();
     virtual ::grpc::Status UploadFile(::grpc::ServerContext* context, const ::remoteGPU::File* request, ::remoteGPU::FileID* response);
     virtual ::grpc::Status DownloadFile(::grpc::ServerContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::File* response);
-    virtual ::grpc::Status Execute(::grpc::ServerContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response);
+    virtual ::grpc::Status Execute(::grpc::ServerContext* context, const ::remoteGPU::FileID* request, ::grpc::ServerWriter< ::remoteGPU::Output>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_UploadFile : public BaseClass {
@@ -193,12 +197,12 @@ class RemoteGPU final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/) override {
+    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::grpc::ServerWriter< ::remoteGPU::Output>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestExecute(::grpc::ServerContext* context, ::remoteGPU::FileID* request, ::grpc::ServerAsyncResponseWriter< ::remoteGPU::Output>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestExecute(::grpc::ServerContext* context, ::remoteGPU::FileID* request, ::grpc::ServerAsyncWriter< ::remoteGPU::Output>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   typedef WithAsyncMethod_UploadFile<WithAsyncMethod_DownloadFile<WithAsyncMethod_Execute<Service > > > AsyncService;
@@ -263,25 +267,20 @@ class RemoteGPU final {
    public:
     WithCallbackMethod_Execute() {
       ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::remoteGPU::FileID, ::remoteGPU::Output>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::remoteGPU::FileID, ::remoteGPU::Output>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::remoteGPU::FileID* request, ::remoteGPU::Output* response) { return this->Execute(context, request, response); }));}
-    void SetMessageAllocatorFor_Execute(
-        ::grpc::MessageAllocator< ::remoteGPU::FileID, ::remoteGPU::Output>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::remoteGPU::FileID, ::remoteGPU::Output>*>(handler)
-              ->SetMessageAllocator(allocator);
+                   ::grpc::CallbackServerContext* context, const ::remoteGPU::FileID* request) { return this->Execute(context, request); }));
     }
     ~WithCallbackMethod_Execute() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/) override {
+    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::grpc::ServerWriter< ::remoteGPU::Output>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* Execute(
-      ::grpc::CallbackServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::remoteGPU::Output>* Execute(
+      ::grpc::CallbackServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_UploadFile<WithCallbackMethod_DownloadFile<WithCallbackMethod_Execute<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -331,7 +330,7 @@ class RemoteGPU final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/) override {
+    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::grpc::ServerWriter< ::remoteGPU::Output>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -388,12 +387,12 @@ class RemoteGPU final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/) override {
+    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::grpc::ServerWriter< ::remoteGPU::Output>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestExecute(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestExecute(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -447,20 +446,20 @@ class RemoteGPU final {
    public:
     WithRawCallbackMethod_Execute() {
       ::grpc::Service::MarkMethodRawCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Execute(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->Execute(context, request); }));
     }
     ~WithRawCallbackMethod_Execute() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/) override {
+    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::grpc::ServerWriter< ::remoteGPU::Output>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* Execute(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* Execute(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_UploadFile : public BaseClass {
@@ -516,36 +515,36 @@ class RemoteGPU final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedDownloadFile(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::remoteGPU::FileID,::remoteGPU::File>* server_unary_streamer) = 0;
   };
+  typedef WithStreamedUnaryMethod_UploadFile<WithStreamedUnaryMethod_DownloadFile<Service > > StreamedUnaryService;
   template <class BaseClass>
-  class WithStreamedUnaryMethod_Execute : public BaseClass {
+  class WithSplitStreamingMethod_Execute : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_Execute() {
+    WithSplitStreamingMethod_Execute() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler<
+        new ::grpc::internal::SplitServerStreamingHandler<
           ::remoteGPU::FileID, ::remoteGPU::Output>(
             [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
+                   ::grpc::ServerSplitStreamer<
                      ::remoteGPU::FileID, ::remoteGPU::Output>* streamer) {
                        return this->StreamedExecute(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_Execute() override {
+    ~WithSplitStreamingMethod_Execute() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::remoteGPU::Output* /*response*/) override {
+    ::grpc::Status Execute(::grpc::ServerContext* /*context*/, const ::remoteGPU::FileID* /*request*/, ::grpc::ServerWriter< ::remoteGPU::Output>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedExecute(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::remoteGPU::FileID,::remoteGPU::Output>* server_unary_streamer) = 0;
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedExecute(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::remoteGPU::FileID,::remoteGPU::Output>* server_split_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_UploadFile<WithStreamedUnaryMethod_DownloadFile<WithStreamedUnaryMethod_Execute<Service > > > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_UploadFile<WithStreamedUnaryMethod_DownloadFile<WithStreamedUnaryMethod_Execute<Service > > > StreamedService;
+  typedef WithSplitStreamingMethod_Execute<Service > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_UploadFile<WithStreamedUnaryMethod_DownloadFile<WithSplitStreamingMethod_Execute<Service > > > StreamedService;
 };
 
 }  // namespace remoteGPU

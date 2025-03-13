@@ -23,7 +23,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train model
-model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test))
+model.fit(x_train, y_train, epochs=50, validation_data=(x_test, y_test))
 
 # Evaluate model
 test_loss, test_acc = model.evaluate(x_test, y_test)

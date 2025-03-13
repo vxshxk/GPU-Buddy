@@ -28,7 +28,9 @@ namespace remoteGPU {
 
 inline constexpr Output::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : out_{},
+      : out_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
 
 template <typename>
@@ -154,18 +156,18 @@ const char descriptor_table_protodef_gpu_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIAB
     protodesc_cold) = {
     "\n\tgpu.proto\022\tremoteGPU\"&\n\004File\022\014\n\004code\030\001"
     " \003(\t\022\020\n\010commands\030\002 \003(\t\"\024\n\006FileID\022\n\n\002id\030\001"
-    " \001(\005\"\025\n\006Output\022\013\n\003out\030\001 \003(\t2\250\001\n\tRemoteGP"
+    " \001(\005\"\025\n\006Output\022\013\n\003out\030\001 \001(\0142\252\001\n\tRemoteGP"
     "U\0222\n\nUploadFile\022\017.remoteGPU.File\032\021.remot"
     "eGPU.FileID\"\000\0224\n\014DownloadFile\022\021.remoteGP"
-    "U.FileID\032\017.remoteGPU.File\"\000\0221\n\007Execute\022\021"
-    ".remoteGPU.FileID\032\021.remoteGPU.Output\"\000b\006"
-    "proto3"
+    "U.FileID\032\017.remoteGPU.File\"\000\0223\n\007Execute\022\021"
+    ".remoteGPU.FileID\032\021.remoteGPU.Output\"\0000\001"
+    "b\006proto3"
 };
 static ::absl::once_flag descriptor_table_gpu_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_gpu_2eproto = {
     false,
     false,
-    286,
+    288,
     descriptor_table_protodef_gpu_2eproto,
     "gpu.proto",
     &descriptor_table_gpu_2eproto_once,
@@ -680,7 +682,7 @@ Output::Output(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE Output::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::remoteGPU::Output& from_msg)
-      : out_{visibility, arena, from.out_},
+      : out_(arena, from.out_),
         _cached_size_{0} {}
 
 Output::Output(
@@ -702,7 +704,7 @@ Output::Output(
 inline PROTOBUF_NDEBUG_INLINE Output::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : out_{visibility, arena},
+      : out_(arena),
         _cached_size_{0} {}
 
 inline void Output::SharedCtor(::_pb::Arena* arena) {
@@ -716,6 +718,7 @@ inline void Output::SharedDtor(MessageLite& self) {
   Output& this_ = static_cast<Output&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.out_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -724,20 +727,8 @@ inline void* Output::PlacementNew_(const void*, void* mem,
   return ::new (mem) Output(arena);
 }
 constexpr auto Output::InternalNewImpl_() {
-  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(Output, _impl_.out_) +
-          decltype(Output::_impl_.out_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-  });
-  if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(Output), alignof(Output), *arena_bits);
-  } else {
-    return ::google::protobuf::internal::MessageCreator(&Output::PlacementNew_,
-                                 sizeof(Output),
-                                 alignof(Output));
-  }
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Output),
+                                            alignof(Output));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -767,7 +758,7 @@ const ::google::protobuf::internal::ClassData* Output::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 28, 2> Output::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> Output::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -785,21 +776,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 28, 2> Output::_table_ = {
     ::_pbi::TcParser::GetTable<::remoteGPU::Output>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated string out = 1;
-    {::_pbi::TcParser::FastUR1,
+    // bytes out = 1;
+    {::_pbi::TcParser::FastBS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Output, _impl_.out_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated string out = 1;
+    // bytes out = 1;
     {PROTOBUF_FIELD_OFFSET(Output, _impl_.out_), 0, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kBytes | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\20\3\0\0\0\0\0\0"
-    "remoteGPU.Output"
-    "out"
   }},
 };
 
@@ -810,7 +798,7 @@ PROTOBUF_NOINLINE void Output::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.out_.Clear();
+  _impl_.out_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -829,12 +817,10 @@ PROTOBUF_NOINLINE void Output::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated string out = 1;
-          for (int i = 0, n = this_._internal_out_size(); i < n; ++i) {
-            const auto& s = this_._internal_out().Get(i);
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "remoteGPU.Output.out");
-            target = stream->WriteString(1, s, target);
+          // bytes out = 1;
+          if (!this_._internal_out().empty()) {
+            const std::string& _s = this_._internal_out();
+            target = stream->WriteBytesMaybeAliased(1, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -860,16 +846,11 @@ PROTOBUF_NOINLINE void Output::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated string out = 1;
-            {
-              total_size +=
-                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_out().size());
-              for (int i = 0, n = this_._internal_out().size(); i < n; ++i) {
-                total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-                    this_._internal_out().Get(i));
-              }
+            // bytes out = 1;
+            if (!this_._internal_out().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
+                                              this_._internal_out());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -884,7 +865,9 @@ void Output::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_out()->MergeFrom(from._internal_out());
+  if (!from._internal_out().empty()) {
+    _this->_internal_set_out(from._internal_out());
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -898,8 +881,10 @@ void Output::CopyFrom(const Output& from) {
 
 void Output::InternalSwap(Output* PROTOBUF_RESTRICT other) {
   using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.out_.InternalSwap(&other->_impl_.out_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.out_, &other->_impl_.out_, arena);
 }
 
 ::google::protobuf::Metadata Output::GetMetadata() const {
