@@ -5,7 +5,7 @@ package remoteGPU;
 service RemoteGPU {
     rpc UploadFile (File) returns (FileID) {}
     rpc DownloadFile (FileID) returns (File) {}
-    rpc Execute (FileID) returns (Output) {}
+    rpc Execute (FileID) returns (stream Output) {}
 }
 
 message File {
@@ -18,5 +18,5 @@ message FileID {
 }
 
 message Output {
-    repeated string out = 1;
+     bytes out = 1;
 }
