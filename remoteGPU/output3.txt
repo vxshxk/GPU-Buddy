@@ -1,0 +1,9 @@
+Torch version: 2.6.0+cu124
+CUDA available: True
+Number of GPUs: 1
+GPU Name: NVIDIA GeForce RTX 3050 Ti Laptop GPU
+Using device: cuda
+Epoch 1, Loss: 0.11611834168434143
+Epoch 2, Loss: 0.22186622023582458
+Epoch 3, Loss: 0.07171951234340668
+Training complete!

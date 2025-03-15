@@ -1,0 +1,4 @@
+Torch version: 2.6.0+cu124
+CUDA available: True
+Number of GPUs: 1
+GPU Name: NVIDIA GeForce RTX 3050 Ti Laptop GPU

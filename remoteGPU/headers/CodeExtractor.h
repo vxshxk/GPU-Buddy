@@ -95,7 +95,7 @@ namespace CodeExtractor {
             tokens.push_back(token);
         }
         if (tokens.size() >= 3 && tokens[0] == "pip" && tokens[1] == "install") {
-            return "pip install --break-system-packages " +  tokens[2];
+            return "pip install " +  tokens[2];
         }
         return "";
     }
