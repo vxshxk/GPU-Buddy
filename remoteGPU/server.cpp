@@ -79,7 +79,7 @@ class RemoteGPUServiceImpl final : public RemoteGPU::Service {
                 std::string FilePath = it->second.first;
                 std::string ScriptPath = it->second.second;
                 std::string RunScript = "chmod +x " + ScriptPath + " && bash " + ScriptPath;       
-                std::string RunCode = "python " + FilePath + " 2>&1";
+                std::string RunCode = "python -u " + FilePath + " 2>&1";
                 std::string TerminalExecute =  RunScript + " && " + RunCode ;
                 FILE* pipe = popen(TerminalExecute.c_str(), "r");
                 if (!pipe) {
