@@ -1,0 +1,48 @@
+# Use NVIDIA CUDA base image (with Ubuntu 22.04)
+FROM nvidia/cuda:12.2.2-devel-ubuntu22.04
+ENV DEBIAN_FRONTEND=noninteractive
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    cmake \
+    build-essential \
+    git \
+    iproute2 \
+    protobuf-compiler \
+    libprotobuf-dev \
+    python3 \
+    python3-pip \
+    python3-venv \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+
+# Set the working directory for gRPC installation
+WORKDIR /deps
+
+# Clone the gRPC repository with submodules (specify a stable version if needed)
+RUN git clone --recurse-submodules -b v1.69.0 --depth 1 --shallow-submodules https://github.com/grpc/grpc.git
+
+# Build and install gRPC
+RUN mkdir -p /deps/grpc/build && cd /deps/grpc/build && \
+    cmake -DgRPC_INSTALL=ON \
+          -DgRPC_BUILD_TESTS=OFF \
+          .. && \
+    make -j8 install
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
+
+# Pass the token securely as an argument
+ARG GITHUB_TOKEN
+EXPOSE 50052
+
+# Clone the private repository into a specific directory in the container
+RUN git clone https://$GITHUB_TOKEN@github.com/vxshxk/GPU-Buddy.git /GPU-Buddy
+
+WORKDIR /GPU-Buddy
+ARG CACHE_BREAK=0
+RUN git fetch
+RUN git checkout scriptfix
+
+RUN chmod +x build_script.sh && chmod +x run_server.sh && chmod +x run_client.sh
+RUN ./build_script.sh

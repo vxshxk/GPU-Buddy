@@ -1,4 +1,0 @@
-/root/GPU-Buddy/remoteGPU/build/CMakeFiles/server.dir
-/root/GPU-Buddy/remoteGPU/build/CMakeFiles/client.dir
-/root/GPU-Buddy/remoteGPU/build/CMakeFiles/edit_cache.dir
-/root/GPU-Buddy/remoteGPU/build/CMakeFiles/rebuild_cache.dir
