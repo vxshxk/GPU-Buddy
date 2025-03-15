@@ -17,7 +17,38 @@ using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
 
+using grpc::Channel;
+using grpc::ClientContext;
+using proxy::ProxyService;
+using proxy::ServerInfo;
+using proxy::RegisterResponse;
+
 const std::string PREFIX_PATH = "../../";
+
+class ProxyClient {
+    public:
+        ProxyClient(std::shared_ptr<Channel> channel) : stub_(ProxyService::NewStub(channel)) {}
+    
+        void RegisterServer(const std::string& ip, int port, bool available) {
+            ServerInfo request;
+            request.set_ip(ip);
+            request.set_port(port);
+            request.set_available(available);
+    
+            RegisterResponse response;
+            ClientContext context;
+    
+            Status status = stub_->RegisterServer(&context, request, &response);
+            if (status.ok()) {
+                std::cout << "Proxy Response: " << response.message() << std::endl;
+            } else {
+                std::cerr << "Failed to register server with proxy." << std::endl;
+            }
+        }
+    
+    private:
+        std::unique_ptr<ProxyService::Stub> stub_;
+    };
 
 class RemoteGPUServiceImpl final : public RemoteGPU::Service {
     public:
@@ -136,6 +167,16 @@ void RunServer() {
 }
 
 int main(int argc, char** argv) {
+    std::string proxy_address = "localhost:50051"; // Proxy Server Address
+    ProxyClient proxy(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
+
+    std::string server_ip = "192.168.1.100"; // Change this to the actual IP
+    int server_port = 50052;
+
+    proxy.RegisterServer(server_ip, server_port, true);
+
+    std::cout << "Server started on " << server_ip << ":" << server_port << std::endl;
+
     RunServer();
     return 0;
 }

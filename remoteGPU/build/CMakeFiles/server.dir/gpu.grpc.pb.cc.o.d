@@ -1,6 +1,6 @@
 CMakeFiles/server.dir/gpu.grpc.pb.cc.o: \
- /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.cc /usr/include/stdc-predef.h \
- /root/GPU-Buddy/remoteGPU/gpu.pb.h /usr/include/c++/13/limits \
+ /GPU-Buddy/remoteGPU/gpu.grpc.pb.cc /usr/include/stdc-predef.h \
+ /GPU-Buddy/remoteGPU/gpu.pb.h /usr/include/c++/13/limits \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -440,7 +440,7 @@ CMakeFiles/server.dir/gpu.grpc.pb.cc.o: \
  /usr/local/include/google/protobuf/map.h \
  /usr/local/include/google/protobuf/map_type_handler.h \
  /usr/local/include/google/protobuf/reflection.h \
- /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.h \
+ /GPU-Buddy/remoteGPU/gpu.grpc.pb.h \
  /usr/local/include/grpcpp/generic/async_generic_service.h \
  /usr/local/include/grpc/support/port_platform.h \
  /usr/include/linux/version.h \

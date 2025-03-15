@@ -2,6 +2,8 @@
 #include <memory>
 #include <grpcpp/grpcpp.h>
 #include "gpu.grpc.pb.h"
+#include "proxy.pb.h"
+#include "proxy.grpc.pb.h"
 #include "headers/CodeExtractor.h"
 #include "headers/CodeRestorer.h"
 
@@ -14,7 +16,35 @@ using remoteGPU::File;
 using remoteGPU::FileID;
 using remoteGPU::Output;
 
+using proxy::ProxyService;
+using proxy::Empty;
+using proxy::ServerList;
+
 const std::string PREFIX_PATH = "../";
+
+class ProxyClient {
+    public:
+        ProxyClient(std::shared_ptr<Channel> channel) : stub_(ProxyService::NewStub(channel)) {}
+    
+        void GetAvailableServers() {
+            Empty request;
+            ServerList response;
+            ClientContext context;
+    
+            Status status = stub_->GetAvailableServers(&context, request, &response);
+            if (status.ok()) {
+                std::cout << "Available Servers:\n";
+                for (const auto& server : response.servers()) {
+                    std::cout << " - " << server.ip() << ":" << server.port() << std::endl;
+                }
+            } else {
+                std::cerr << "Failed to get available servers from proxy." << std::endl;
+            }
+        }
+    
+    private:
+        std::unique_ptr<ProxyService::Stub> stub_;
+    };
 
 class RemoteGPUClient {
 public:
@@ -100,10 +130,32 @@ private:
 };
 
 int main(int argc, char** argv) {
-    RemoteGPUClient client(grpc::CreateChannel("localhost:50052", grpc::InsecureChannelCredentials()));
+    std::string proxy_address = "localhost:50051"; // Proxy Server Address
+    ProxyClient proxy(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
+
+    proxy.GetAvailableServers();
+
+    // Get available servers and select one dynamically
+    Empty request;
+    ServerList response;
+    ClientContext context;
+
+    std::unique_ptr<ProxyService::Stub> proxy_stub = ProxyService::NewStub(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
+    Status status = proxy_stub->GetAvailableServers(&context, request, &response);
+
+    if (!status.ok() || response.servers_size() == 0) {
+        std::cerr << "No available servers found. Exiting..." << std::endl;
+        return 1;
+    }
+
+    // Select the first available server (you can implement a better selection strategy)
+    std::string selected_server = response.servers(0).ip() + ":" + std::to_string(response.servers(0).port());
+    std::cout << "Selected server: " << selected_server << std::endl;
+
+    // Connect to the selected RemoteGPU server
+    RemoteGPUClient client(grpc::CreateChannel(selected_server, grpc::InsecureChannelCredentials()));
 
     std::string file_name;
-
     std::cout << "Enter file name: ";
     std::cin >> file_name;
 
@@ -116,7 +168,6 @@ int main(int argc, char** argv) {
     std::cout << file_id << std::endl;
 
     client.DownloadFile(file_id);
-
     client.Execute(file_id);
 
     return 0;

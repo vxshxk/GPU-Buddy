@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proxy;
+
+service ProxyService {
+  rpc RegisterServer (ServerInfo) returns (RegisterResponse);
+  rpc GetAvailableServers (Empty) returns (ServerList);
+}
+
+message ServerInfo {
+  string ip = 1;
+  int32 port = 2;
+  bool available = 3;
+}
+
+message RegisterResponse {
+  string message = 1;
+}
+
+message Empty {}
+
+message ServerList {
+  repeated ServerInfo servers = 1;
+}

@@ -1,4 +1,4 @@
-CMakeFiles/client.dir/client.cpp.o: /root/GPU-Buddy/remoteGPU/client.cpp \
+CMakeFiles/client.dir/client.cpp.o: /GPU-Buddy/remoteGPU/client.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13/iostream \
  /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
@@ -481,8 +481,7 @@ CMakeFiles/client.dir/client.cpp.o: /root/GPU-Buddy/remoteGPU/client.cpp \
  /usr/local/include/grpcpp/security/authorization_policy_provider.h \
  /usr/local/include/grpcpp/server_posix.h \
  /usr/local/include/grpcpp/version_info.h \
- /root/GPU-Buddy/remoteGPU/gpu.grpc.pb.h \
- /root/GPU-Buddy/remoteGPU/gpu.pb.h \
+ /GPU-Buddy/remoteGPU/gpu.grpc.pb.h /GPU-Buddy/remoteGPU/gpu.pb.h \
  /usr/local/include/google/protobuf/runtime_version.h \
  /usr/local/include/google/protobuf/io/coded_stream.h \
  /usr/local/include/google/protobuf/endian.h \
@@ -596,9 +595,13 @@ CMakeFiles/client.dir/client.cpp.o: /root/GPU-Buddy/remoteGPU/client.cpp \
  /usr/local/include/grpcpp/support/proto_buffer_reader.h \
  /usr/local/include/grpcpp/support/proto_buffer_writer.h \
  /usr/local/include/grpcpp/support/stub_options.h \
- /root/GPU-Buddy/remoteGPU/headers/CodeExtractor.h \
- /usr/include/c++/13/fstream /usr/include/c++/13/bits/codecvt.h \
+ /GPU-Buddy/remoteGPU/proxy.pb.h \
+ /usr/local/include/google/protobuf/generated_message_bases.h \
+ /usr/local/include/google/protobuf/io/zero_copy_stream_impl.h \
+ /GPU-Buddy/remoteGPU/proxy.grpc.pb.h \
+ /GPU-Buddy/remoteGPU/headers/CodeExtractor.h /usr/include/c++/13/fstream \
+ /usr/include/c++/13/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
  /usr/include/c++/13/bits/fstream.tcc \
- /root/GPU-Buddy/remoteGPU/headers/CodeRestorer.h
+ /GPU-Buddy/remoteGPU/headers/CodeRestorer.h

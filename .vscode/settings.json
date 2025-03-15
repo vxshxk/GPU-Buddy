@@ -94,5 +94,6 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/home/aryan/Documents/R_GPU/GPU-Buddy-scriptfix/remoteGPU"
 }

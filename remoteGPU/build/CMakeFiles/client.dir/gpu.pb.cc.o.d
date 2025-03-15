@@ -1,5 +1,5 @@
-CMakeFiles/client.dir/gpu.pb.cc.o: /root/GPU-Buddy/remoteGPU/gpu.pb.cc \
- /usr/include/stdc-predef.h /root/GPU-Buddy/remoteGPU/gpu.pb.h \
+CMakeFiles/client.dir/gpu.pb.cc.o: /GPU-Buddy/remoteGPU/gpu.pb.cc \
+ /usr/include/stdc-predef.h /GPU-Buddy/remoteGPU/gpu.pb.h \
  /usr/include/c++/13/limits \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
