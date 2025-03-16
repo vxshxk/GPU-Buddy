@@ -37,7 +37,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cu121 torch torchvision
-RUN pip install --no-cache-dir tensorflow
+RUN pip install --no-cache-dir tensorflow==2.15.0
 
 ARG GITHUB_TOKEN
 EXPOSE 50052
