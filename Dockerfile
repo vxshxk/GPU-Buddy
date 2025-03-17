@@ -35,3 +35,4 @@ COPY . /GPU-Buddy
 #RUN chmod +x build_script.sh && chmod +x run_server.sh && chmod +x run_client.sh
 #RUN ./build_script.sh
 EXPOSE 50052
+EXPOSE 50051

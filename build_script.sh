@@ -1,24 +1,12 @@
 #!/bin/bash
-cd protos
-protoc -I. --cpp_out=../remoteGPU --grpc_out=../remoteGPU   --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin gpu.proto
-protoc -I. --cpp_out=../remoteGPU --grpc_out=../remoteGPU \
-    --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin proxy.proto
 
-cd ..
+protoc -I=protos/ --cpp_out=remoteGPU/ protos/gpu.proto
+protoc -I=protos/ --grpc_out=remoteGPU/ --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin protos/gpu.proto
+protoc -I=protos/ --cpp_out=remoteGPU/ protos/proxy.proto
+protoc -I=protos/ --grpc_out=remoteGPU/ --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin protos/proxy.proto
 
-
-# Step 2: Prepare build directory
-BUILD_DIR="remoteGPU/cmake/build"
-
-# Remove old CMake cache if it exists
-if [ -d "$BUILD_DIR" ]; then
-    echo "Cleaning previous CMake cache..."
-    rm -rf "$BUILD_DIR"
-fi
-
-# Step 3: Create fresh build directory
-mkdir -p "$BUILD_DIR"
-cd "$BUILD_DIR"
-
+cd remoteGPU
+mkdir -p cmake/build
+cd cmake/build
 cmake ../..
 make
