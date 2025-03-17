@@ -41,6 +41,28 @@ std::string GetLocalIPAddress() {
     return "192.168.1.101"; // Fallback
 }
 
+bool checkGRPCCompatibility() {
+    int status = std::system("nvidia-smi > /dev/null 2>&1");
+    if (status != 0) {
+        std::cerr << "Error: NVIDIA GPU not detected or drivers are not installed." << std::endl;
+        return false;
+    }
+    
+    status = std::system("nvcc --version > /dev/null 2>&1");
+    if (status != 0) {
+        std::cerr << "Error: CUDA compiler (nvcc) not found. Ensure CUDA is installed properly." << std::endl;
+        return false;
+    }
+    
+    status = std::system("which grpc_cpp_plugin > /dev/null 2>&1");
+    if (status != 0) {
+        std::cerr << "Error: gRPC C++ plugin not found. Ensure gRPC is installed." << std::endl;
+        return false;
+    }
+    
+    return true;
+}
+
 class ProxyClient {
 public:
     ProxyClient(std::shared_ptr<Channel> channel) : stub_(ProxyService::NewStub(channel)) {}
@@ -181,6 +203,11 @@ void RunServer(const std::string& ip_address) {
 }
 
 int main(int argc, char** argv) {
+    if (!checkGRPCCompatibility()) {
+        std::cerr << "Error: gRPC is not compatible with this environment. Please check NVIDIA GPU drivers and settings." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    
     std::string proxy_ip;
     std::cout << "Enter proxy server IP Address: ";
     std::cin >> proxy_ip;

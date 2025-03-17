@@ -1,5 +1,5 @@
 # Use the latest Ubuntu image
-FROM ubuntu:latest
+FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y cmake build-essential git python3.12 python3-pip iproute2 python3.12-venv protobuf-compiler libprotobuf-dev iputils-ping
