@@ -12,9 +12,9 @@
 
 #include "proxy.pb.h"
 #include "proxy.grpc.pb.h"
-#include "remote_gpu.grpc.pb.h"
-#include "CodeExtractor.h"
-#include "CodeRestorer.h"
+#include "gpu.grpc.pb.h"
+#include "headers/CodeExtractor.h"
+#include "headers/CodeRestorer.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;

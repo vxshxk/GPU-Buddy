@@ -10,11 +10,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/GPU-Buddy/remoteGPU/gpu.grpc.pb.cc" "CMakeFiles/server.dir/gpu.grpc.pb.cc.o" "gcc" "CMakeFiles/server.dir/gpu.grpc.pb.cc.o.d"
   "/GPU-Buddy/remoteGPU/gpu.pb.cc" "CMakeFiles/server.dir/gpu.pb.cc.o" "gcc" "CMakeFiles/server.dir/gpu.pb.cc.o.d"
-<<<<<<< HEAD
-=======
   "/GPU-Buddy/remoteGPU/proxy.grpc.pb.cc" "CMakeFiles/server.dir/proxy.grpc.pb.cc.o" "gcc" "CMakeFiles/server.dir/proxy.grpc.pb.cc.o.d"
   "/GPU-Buddy/remoteGPU/proxy.pb.cc" "CMakeFiles/server.dir/proxy.pb.cc.o" "gcc" "CMakeFiles/server.dir/proxy.pb.cc.o.d"
->>>>>>> Proxy
   "/GPU-Buddy/remoteGPU/server.cpp" "CMakeFiles/server.dir/server.cpp.o" "gcc" "CMakeFiles/server.dir/server.cpp.o.d"
   )
 

@@ -70,7 +70,6 @@ include CMakeFiles/client.dir/progress.make
 include CMakeFiles/client.dir/flags.make
 
 CMakeFiles/client.dir/client.cpp.o: CMakeFiles/client.dir/flags.make
-<<<<<<< HEAD
 CMakeFiles/client.dir/client.cpp.o: ../client.cpp
 CMakeFiles/client.dir/client.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/client.dir/client.cpp.o"
@@ -111,76 +110,34 @@ CMakeFiles/client.dir/gpu.grpc.pb.cc.i: cmake_force
 CMakeFiles/client.dir/gpu.grpc.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/gpu.grpc.pb.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /GPU-Buddy/remoteGPU/gpu.grpc.pb.cc -o CMakeFiles/client.dir/gpu.grpc.pb.cc.s
-=======
-CMakeFiles/client.dir/client.cpp.o: /GPU-Buddy/remoteGPU/client.cpp
-CMakeFiles/client.dir/client.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/client.dir/client.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client.cpp.o -MF CMakeFiles/client.dir/client.cpp.o.d -o CMakeFiles/client.dir/client.cpp.o -c /GPU-Buddy/remoteGPU/client.cpp
-
-CMakeFiles/client.dir/client.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/client.dir/client.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /GPU-Buddy/remoteGPU/client.cpp > CMakeFiles/client.dir/client.cpp.i
-
-CMakeFiles/client.dir/client.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/client.dir/client.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /GPU-Buddy/remoteGPU/client.cpp -o CMakeFiles/client.dir/client.cpp.s
-
-CMakeFiles/client.dir/gpu.pb.cc.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/gpu.pb.cc.o: /GPU-Buddy/remoteGPU/gpu.pb.cc
-CMakeFiles/client.dir/gpu.pb.cc.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/client.dir/gpu.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/gpu.pb.cc.o -MF CMakeFiles/client.dir/gpu.pb.cc.o.d -o CMakeFiles/client.dir/gpu.pb.cc.o -c /GPU-Buddy/remoteGPU/gpu.pb.cc
-
-CMakeFiles/client.dir/gpu.pb.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/client.dir/gpu.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /GPU-Buddy/remoteGPU/gpu.pb.cc > CMakeFiles/client.dir/gpu.pb.cc.i
-
-CMakeFiles/client.dir/gpu.pb.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/client.dir/gpu.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /GPU-Buddy/remoteGPU/gpu.pb.cc -o CMakeFiles/client.dir/gpu.pb.cc.s
-
-CMakeFiles/client.dir/gpu.grpc.pb.cc.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/gpu.grpc.pb.cc.o: /GPU-Buddy/remoteGPU/gpu.grpc.pb.cc
-CMakeFiles/client.dir/gpu.grpc.pb.cc.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/client.dir/gpu.grpc.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/gpu.grpc.pb.cc.o -MF CMakeFiles/client.dir/gpu.grpc.pb.cc.o.d -o CMakeFiles/client.dir/gpu.grpc.pb.cc.o -c /GPU-Buddy/remoteGPU/gpu.grpc.pb.cc
-
-CMakeFiles/client.dir/gpu.grpc.pb.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/client.dir/gpu.grpc.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /GPU-Buddy/remoteGPU/gpu.grpc.pb.cc > CMakeFiles/client.dir/gpu.grpc.pb.cc.i
-
-CMakeFiles/client.dir/gpu.grpc.pb.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/client.dir/gpu.grpc.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /GPU-Buddy/remoteGPU/gpu.grpc.pb.cc -o CMakeFiles/client.dir/gpu.grpc.pb.cc.s
 
 CMakeFiles/client.dir/proxy.pb.cc.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/proxy.pb.cc.o: /GPU-Buddy/remoteGPU/proxy.pb.cc
+CMakeFiles/client.dir/proxy.pb.cc.o: ../proxy.pb.cc
 CMakeFiles/client.dir/proxy.pb.cc.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/client.dir/proxy.pb.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/client.dir/proxy.pb.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/proxy.pb.cc.o -MF CMakeFiles/client.dir/proxy.pb.cc.o.d -o CMakeFiles/client.dir/proxy.pb.cc.o -c /GPU-Buddy/remoteGPU/proxy.pb.cc
 
 CMakeFiles/client.dir/proxy.pb.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/client.dir/proxy.pb.cc.i"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/proxy.pb.cc.i"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /GPU-Buddy/remoteGPU/proxy.pb.cc > CMakeFiles/client.dir/proxy.pb.cc.i
 
 CMakeFiles/client.dir/proxy.pb.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/client.dir/proxy.pb.cc.s"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/proxy.pb.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /GPU-Buddy/remoteGPU/proxy.pb.cc -o CMakeFiles/client.dir/proxy.pb.cc.s
 
 CMakeFiles/client.dir/proxy.grpc.pb.cc.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/proxy.grpc.pb.cc.o: /GPU-Buddy/remoteGPU/proxy.grpc.pb.cc
+CMakeFiles/client.dir/proxy.grpc.pb.cc.o: ../proxy.grpc.pb.cc
 CMakeFiles/client.dir/proxy.grpc.pb.cc.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/client.dir/proxy.grpc.pb.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/client.dir/proxy.grpc.pb.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/proxy.grpc.pb.cc.o -MF CMakeFiles/client.dir/proxy.grpc.pb.cc.o.d -o CMakeFiles/client.dir/proxy.grpc.pb.cc.o -c /GPU-Buddy/remoteGPU/proxy.grpc.pb.cc
 
 CMakeFiles/client.dir/proxy.grpc.pb.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/client.dir/proxy.grpc.pb.cc.i"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/proxy.grpc.pb.cc.i"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /GPU-Buddy/remoteGPU/proxy.grpc.pb.cc > CMakeFiles/client.dir/proxy.grpc.pb.cc.i
 
 CMakeFiles/client.dir/proxy.grpc.pb.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/client.dir/proxy.grpc.pb.cc.s"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/proxy.grpc.pb.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /GPU-Buddy/remoteGPU/proxy.grpc.pb.cc -o CMakeFiles/client.dir/proxy.grpc.pb.cc.s
->>>>>>> Proxy
 
 # Object files for target client
 client_OBJECTS = \
@@ -298,11 +255,7 @@ client: /usr/local/lib/libssl.a
 client: /usr/local/lib/libcrypto.a
 client: /usr/local/lib/libaddress_sorting.a
 client: CMakeFiles/client.dir/link.txt
-<<<<<<< HEAD
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable client"
-=======
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable client"
->>>>>>> Proxy
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/GPU-Buddy/remoteGPU/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -314,10 +267,6 @@ CMakeFiles/client.dir/clean:
 .PHONY : CMakeFiles/client.dir/clean
 
 CMakeFiles/client.dir/depend:
-<<<<<<< HEAD
 	cd /GPU-Buddy/remoteGPU/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /GPU-Buddy/remoteGPU /GPU-Buddy/remoteGPU /GPU-Buddy/remoteGPU/build /GPU-Buddy/remoteGPU/build /GPU-Buddy/remoteGPU/build/CMakeFiles/client.dir/DependInfo.cmake --color=$(COLOR)
-=======
-	cd /GPU-Buddy/remoteGPU/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /GPU-Buddy/remoteGPU /GPU-Buddy/remoteGPU /GPU-Buddy/remoteGPU/build /GPU-Buddy/remoteGPU/build /GPU-Buddy/remoteGPU/build/CMakeFiles/client.dir/DependInfo.cmake "--color=$(COLOR)"
->>>>>>> Proxy
 .PHONY : CMakeFiles/client.dir/depend
 

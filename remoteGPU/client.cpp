@@ -20,7 +20,7 @@ using proxy::ProxyService;
 using proxy::Empty;
 using proxy::ServerList;
 
-const std::string PREFIX_PATH = "../../";
+const std::string PREFIX_PATH = "../";
 
 class ProxyClient {
     public:

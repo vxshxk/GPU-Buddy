@@ -11,11 +11,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/GPU-Buddy/remoteGPU/client.cpp" "CMakeFiles/client.dir/client.cpp.o" "gcc" "CMakeFiles/client.dir/client.cpp.o.d"
   "/GPU-Buddy/remoteGPU/gpu.grpc.pb.cc" "CMakeFiles/client.dir/gpu.grpc.pb.cc.o" "gcc" "CMakeFiles/client.dir/gpu.grpc.pb.cc.o.d"
   "/GPU-Buddy/remoteGPU/gpu.pb.cc" "CMakeFiles/client.dir/gpu.pb.cc.o" "gcc" "CMakeFiles/client.dir/gpu.pb.cc.o.d"
-<<<<<<< HEAD
-=======
   "/GPU-Buddy/remoteGPU/proxy.grpc.pb.cc" "CMakeFiles/client.dir/proxy.grpc.pb.cc.o" "gcc" "CMakeFiles/client.dir/proxy.grpc.pb.cc.o.d"
   "/GPU-Buddy/remoteGPU/proxy.pb.cc" "CMakeFiles/client.dir/proxy.pb.cc.o" "gcc" "CMakeFiles/client.dir/proxy.pb.cc.o.d"
->>>>>>> Proxy
   )
 
 # Targets to which this target links.
