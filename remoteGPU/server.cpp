@@ -127,7 +127,7 @@ public:
             std::string FilePath = it->second.first;
             std::string ScriptPath = it->second.second;
 
-            std::string SetEnvironment = "python -m venv env && source env/bin/activate";
+            std::string SetEnvironment = "python -m venv env && . env/bin/activate";
             std::string RunScript = "chmod +x " + ScriptPath + " && ./" + ScriptPath;
             std::string OutputPath = PREFIX_PATH + "output" + std::to_string(cur_id) + ".txt";
             std::string RunCode = "python " + FilePath + " > " + OutputPath;
@@ -181,10 +181,13 @@ void RunServer(const std::string& ip_address) {
 }
 
 int main(int argc, char** argv) {
-    std::string proxy_address = "localhost:50051"; // Proxy Server Address
+    std::string proxy_ip;
+    std::cout << "Enter proxy server IP Address: ";
+    std::cin >> proxy_ip;
+    std::string proxy_address = proxy_ip + ":50051"; 
     ProxyClient proxy(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
 
-    std::string server_ip = GetLocalIPAddress(); // Dynamically fetch local IP
+    std::string server_ip = GetLocalIPAddress(); 
     int server_port = 50052;
 
     proxy.RegisterServer(server_ip, server_port, true);

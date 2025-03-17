@@ -20,7 +20,7 @@ using proxy::ProxyService;
 using proxy::Empty;
 using proxy::ServerList;
 
-const std::string PREFIX_PATH = "../";
+const std::string PREFIX_PATH = "../../";
 
 class ProxyClient {
     public:
@@ -130,7 +130,10 @@ private:
 };
 
 int main(int argc, char** argv) {
-    std::string proxy_address = "localhost:50051"; // Proxy Server Address
+    std::string proxy_ip;
+    std::cout << "Enter proxy server IP Address: ";
+    std::cin >> proxy_ip;
+    std::string proxy_address = proxy_ip + ":50051"; 
     ProxyClient proxy(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
 
     proxy.GetAvailableServers();
