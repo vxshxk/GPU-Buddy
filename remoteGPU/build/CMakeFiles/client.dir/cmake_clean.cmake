@@ -5,6 +5,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/client.dir/gpu.grpc.pb.cc.o.d"
   "CMakeFiles/client.dir/gpu.pb.cc.o"
   "CMakeFiles/client.dir/gpu.pb.cc.o.d"
+  "CMakeFiles/client.dir/proxy.grpc.pb.cc.o"
+  "CMakeFiles/client.dir/proxy.grpc.pb.cc.o.d"
+  "CMakeFiles/client.dir/proxy.pb.cc.o"
+  "CMakeFiles/client.dir/proxy.pb.cc.o.d"
   "client"
   "client.pdb"
 )

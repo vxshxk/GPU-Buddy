@@ -142,6 +142,19 @@ client/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
 .PHONY : client/fast
 
+#=============================================================================
+# Target rules for targets named proxy_server
+
+# Build rule for target.
+proxy_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 proxy_server
+.PHONY : proxy_server
+
+# fast build rule for target.
+proxy_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/build
+.PHONY : proxy_server/fast
+
 client.o: client.cpp.o
 .PHONY : client.o
 
@@ -220,6 +233,90 @@ gpu.pb.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/gpu.pb.cc.s
 .PHONY : gpu.pb.cc.s
 
+proxy.grpc.pb.o: proxy.grpc.pb.cc.o
+.PHONY : proxy.grpc.pb.o
+
+# target to build an object file
+proxy.grpc.pb.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/proxy.grpc.pb.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/proxy.grpc.pb.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy.grpc.pb.cc.o
+.PHONY : proxy.grpc.pb.cc.o
+
+proxy.grpc.pb.i: proxy.grpc.pb.cc.i
+.PHONY : proxy.grpc.pb.i
+
+# target to preprocess a source file
+proxy.grpc.pb.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/proxy.grpc.pb.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/proxy.grpc.pb.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy.grpc.pb.cc.i
+.PHONY : proxy.grpc.pb.cc.i
+
+proxy.grpc.pb.s: proxy.grpc.pb.cc.s
+.PHONY : proxy.grpc.pb.s
+
+# target to generate assembly for a file
+proxy.grpc.pb.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/proxy.grpc.pb.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/proxy.grpc.pb.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy.grpc.pb.cc.s
+.PHONY : proxy.grpc.pb.cc.s
+
+proxy.pb.o: proxy.pb.cc.o
+.PHONY : proxy.pb.o
+
+# target to build an object file
+proxy.pb.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/proxy.pb.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/proxy.pb.cc.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy.pb.cc.o
+.PHONY : proxy.pb.cc.o
+
+proxy.pb.i: proxy.pb.cc.i
+.PHONY : proxy.pb.i
+
+# target to preprocess a source file
+proxy.pb.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/proxy.pb.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/proxy.pb.cc.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy.pb.cc.i
+.PHONY : proxy.pb.cc.i
+
+proxy.pb.s: proxy.pb.cc.s
+.PHONY : proxy.pb.s
+
+# target to generate assembly for a file
+proxy.pb.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/proxy.pb.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/proxy.pb.cc.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy.pb.cc.s
+.PHONY : proxy.pb.cc.s
+
+proxy_server.o: proxy_server.cpp.o
+.PHONY : proxy_server.o
+
+# target to build an object file
+proxy_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy_server.cpp.o
+.PHONY : proxy_server.cpp.o
+
+proxy_server.i: proxy_server.cpp.i
+.PHONY : proxy_server.i
+
+# target to preprocess a source file
+proxy_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy_server.cpp.i
+.PHONY : proxy_server.cpp.i
+
+proxy_server.s: proxy_server.cpp.s
+.PHONY : proxy_server.s
+
+# target to generate assembly for a file
+proxy_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/proxy_server.dir/build.make CMakeFiles/proxy_server.dir/proxy_server.cpp.s
+.PHONY : proxy_server.cpp.s
+
 server.o: server.cpp.o
 .PHONY : server.o
 
@@ -253,6 +350,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... client"
+	@echo "... proxy_server"
 	@echo "... server"
 	@echo "... client.o"
 	@echo "... client.i"
@@ -263,6 +361,15 @@ help:
 	@echo "... gpu.pb.o"
 	@echo "... gpu.pb.i"
 	@echo "... gpu.pb.s"
+	@echo "... proxy.grpc.pb.o"
+	@echo "... proxy.grpc.pb.i"
+	@echo "... proxy.grpc.pb.s"
+	@echo "... proxy.pb.o"
+	@echo "... proxy.pb.i"
+	@echo "... proxy.pb.s"
+	@echo "... proxy_server.o"
+	@echo "... proxy_server.i"
+	@echo "... proxy_server.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"

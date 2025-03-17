@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DCARES_STATICLIB
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/GPU-Buddy/remoteGPU/remoteGPU/headers
 
 CXX_FLAGS = 
 
