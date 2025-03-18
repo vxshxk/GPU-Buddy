@@ -219,8 +219,6 @@ int main(int argc, char** argv) {
 
     proxy.RegisterServer(server_ip, server_port, true);
 
-    std::cout << "Server started on " << server_ip << ":" << server_port << std::endl;
-
     RunServer(server_ip);
     return 0;
 }
