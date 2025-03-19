@@ -6,7 +6,7 @@ protoc -I=protos/ --cpp_out=remoteGPU/ protos/proxy.proto
 protoc -I=protos/ --grpc_out=remoteGPU/ --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin protos/proxy.proto
 
 cd remoteGPU
-mkdir -p build
-cd build
-cmake ..
+mkdir -p cmake/build
+cd cmake/build
+cmake ../..
 make

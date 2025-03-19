@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd remoteGPU/build
+cd remoteGPU/cmake/build
 ./client

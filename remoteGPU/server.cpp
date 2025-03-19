@@ -32,13 +32,19 @@ using proxy::ProxyService;
 using proxy::ServerInfo;
 using proxy::RegisterResponse;
 
-const std::string PREFIX_PATH = "../";
+using namespace grpc;
+using namespace proxy;
 
-// Function to get the local IP address dynamically
+enum class MessageID : uint8_t {
+    REGISTER = 0, AVAILABLE = 1
+};
+
+const std::string PREFIX_PATH = "../../";
+
 std::string GetLocalIPAddress() {
     const char* env_ip = std::getenv("SERVER_IP");
     if (env_ip) return std::string(env_ip);
-    return "192.168.1.101"; // Fallback
+    return "192.168.1.101"; 
 }
 
 bool checkGRPCCompatibility() {
@@ -62,31 +68,6 @@ bool checkGRPCCompatibility() {
     
     return true;
 }
-
-class ProxyClient {
-public:
-    ProxyClient(std::shared_ptr<Channel> channel) : stub_(ProxyService::NewStub(channel)) {}
-
-    void RegisterServer(const std::string& ip, int port, bool available) {
-        ServerInfo request;
-        request.set_ip(ip);
-        request.set_port(port);
-        request.set_available(available);
-
-        RegisterResponse response;
-        ClientContext context;
-
-        Status status = stub_->RegisterServer(&context, request, &response);
-        if (status.ok()) {
-            std::cout << "Proxy Response: " << response.message() << std::endl;
-        } else {
-            std::cerr << "Failed to register server with proxy." << std::endl;
-        }
-    }
-
-private:
-    std::unique_ptr<ProxyService::Stub> stub_;
-};
 
 class RemoteGPUServiceImpl final : public RemoteGPU::Service {
 public:
@@ -175,8 +156,9 @@ private:
     std::unordered_map<int, std::pair<std::string, std::string>> index;
 };
 
-void RunServer(const std::string& ip_address) {
-    std::string server_address = ip_address + ":50052";
+void RunServer() {
+    std::string server_ip = GetLocalIPAddress(); 
+    std::string server_address = server_ip + ":50052";
     RemoteGPUServiceImpl service;
 
     ServerBuilder builder;
@@ -189,25 +171,112 @@ void RunServer(const std::string& ip_address) {
     server->Wait();
 }
 
+class ProxyServerClient {
+    public:
+        ProxyServerClient(std::shared_ptr<Channel> channel) : _stub{ProxyService::NewStub(channel)} {}
+
+        void Register() {
+            ServerInfo request;
+
+            std::string server_ip = GetLocalIPAddress(); 
+            int server_port = 50052;
+            bool available = true;
+
+            request.set_ip(server_ip);
+            request.set_port(server_port);
+            request.set_available(available);
+
+            auto* call = new AsyncClientCall<ServerInfo, RegisterResponse>;
+            call->request = request;
+
+            call->rpc = _stub->PrepareAsyncRegisterServer(&call->context, request, &_queue);
+            call->rpc->StartCall();
+
+            auto* tag = new Tag;
+            tag->call = (void*)call;
+            tag->id = MessageID::REGISTER;
+            call->rpc->Finish(&call->response, &call->status, (void*)tag);
+        }
+
+        void AsyncCompleteRPC() {
+            void* tag;
+            bool ok = false;
+
+            if (_queue.Next(&tag, &ok)) {
+                auto* tag_ptr = static_cast<Tag*>(tag);
+                if (!ok || !tag_ptr) {
+                    std::cerr << "Something went wrong" << std::endl;
+                    abort();
+                }
+
+                std::string err;
+                switch (tag_ptr->id) {
+                    case MessageID::REGISTER: {
+                        auto* call = static_cast<AsyncClientCall<ServerInfo, RegisterResponse>*>(tag_ptr->call);
+                        if (call) {
+                            if (call->status.ok()) {
+                                std::cout << "Proxy Response: " << call->response.message() << std::endl;
+                            } else {
+                                err = std::to_string(call->status.error_code()) + ": " + call->status.error_message();
+                            }
+                        } else {
+                            err = "A client call was deleted";
+                        }
+                        delete call;
+                        break;
+                    }
+                }
+                delete tag_ptr;
+
+                if (!err.empty()) {
+                    throw std::runtime_error(err);
+                }
+            }
+        }
+
+    private:
+        template <class RequestType, class ResponseType>
+        struct AsyncClientCall {
+            RequestType request;
+            ResponseType response;
+            ClientContext context;
+            Status status;
+            std::unique_ptr<ClientAsyncResponseReader<ResponseType>> rpc;
+        };
+
+        struct Tag {
+            void* call;
+            MessageID id;
+        };
+
+        std::unique_ptr<ProxyService::Stub> _stub;
+        CompletionQueue _queue;
+};
+
+void RunProxyServerClient() {
+    std::string proxy_ip;
+    std::cout << "Enter proxy server IP Address: ";
+    std::cin >> proxy_ip;
+    std::string proxy_address = proxy_ip + ":50051";    
+
+    std::string server_address{proxy_address};
+    ProxyServerClient client{grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials())};
+
+    std::thread thread{&ProxyServerClient::AsyncCompleteRPC, &client};
+
+    client.Register();
+
+    thread.join();
+}
+
 int main(int argc, char** argv) {
     if (!checkGRPCCompatibility()) {
         std::cerr << "Error: gRPC is not compatible with this environment. Please check NVIDIA GPU drivers and settings." << std::endl;
         exit(EXIT_FAILURE);
     }
-    
-    std::string proxy_ip;
-    std::cout << "Enter proxy server IP Address: ";
-    std::cin >> proxy_ip;
-    std::string proxy_address = proxy_ip + ":50051"; 
-    ProxyClient proxy(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
 
-    std::string server_ip = GetLocalIPAddress(); 
-    int server_port = 50052;
+    RunProxyServerClient();
 
-    proxy.RegisterServer(server_ip, server_port, true);
-
-    std::cout << "Server started on " << server_ip << ":" << server_port << std::endl;
-
-    RunServer(server_ip);
+    RunServer();
     return 0;
 }

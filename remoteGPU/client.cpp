@@ -1,12 +1,20 @@
-#include <iostream>
-#include <memory>
+#include <bits/stdc++.h>
 #include <grpcpp/grpcpp.h>
-#include "gpu.grpc.pb.h"
+#include <cstdlib>
+#include <fstream>
+#include <sys/types.h>
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+#include <cstring>
+#include <netdb.h>
+#include <unistd.h>
+#include <netinet/in.h>
+
 #include "proxy.pb.h"
 #include "proxy.grpc.pb.h"
+#include "gpu.grpc.pb.h"
 #include "headers/CodeExtractor.h"
 #include "headers/CodeRestorer.h"
-
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
@@ -20,31 +28,14 @@ using proxy::ProxyService;
 using proxy::Empty;
 using proxy::ServerList;
 
-const std::string PREFIX_PATH = "../";
+using namespace grpc;
+using namespace proxy;
 
-class ProxyClient {
-    public:
-        ProxyClient(std::shared_ptr<Channel> channel) : stub_(ProxyService::NewStub(channel)) {}
-    
-        void GetAvailableServers() {
-            Empty request;
-            ServerList response;
-            ClientContext context;
-    
-            Status status = stub_->GetAvailableServers(&context, request, &response);
-            if (status.ok()) {
-                std::cout << "Available Servers:\n";
-                for (const auto& server : response.servers()) {
-                    std::cout << " - " << server.ip() << ":" << server.port() << std::endl;
-                }
-            } else {
-                std::cerr << "Failed to get available servers from proxy." << std::endl;
-            }
-        }
-    
-    private:
-        std::unique_ptr<ProxyService::Stub> stub_;
-    };
+enum class MessageID : uint8_t {
+    REGISTER = 0, AVAILABLE = 1
+};
+
+const std::string PREFIX_PATH = "../../";
 
 class RemoteGPUClient {
 public:
@@ -123,34 +114,109 @@ private:
     std::unique_ptr<RemoteGPU::Stub> stub_;
 };
 
-int main(int argc, char** argv) {
+class ProxyClient {
+    public:
+        ProxyClient(std::shared_ptr<Channel> channel) : _stub{ProxyService::NewStub(channel)} {}
+
+        void GetAvailableServers() {
+            Empty request;
+
+            auto* call = new AsyncClientCall<Empty, ServerList>;
+            call->request = request;
+
+            call->rpc = _stub->PrepareAsyncGetAvailableServers(&call->context, request, &_queue);
+            call->rpc->StartCall();
+
+            auto* tag = new Tag;
+            tag->call = (void*)call;
+            tag->id = MessageID::AVAILABLE;
+            call->rpc->Finish(&call->response, &call->status, (void*)tag);
+        }
+
+        void AsyncCompleteRPC() {
+            void* tag;
+            bool ok = false;
+
+            if (_queue.Next(&tag, &ok)) {
+                auto* tag_ptr = static_cast<Tag*>(tag);
+                if (!ok || !tag_ptr) {
+                    std::cerr << "Something went wrong" << std::endl;
+                    abort();
+                }
+
+                std::string err;
+                switch (tag_ptr->id) {
+                    case MessageID::AVAILABLE: {
+                        auto* call = static_cast<AsyncClientCall<Empty, ServerList>*>(tag_ptr->call);
+                        if (call) {
+                            if (call->status.ok()) {
+                                std::cout << "Available Servers:\n";
+                                for (const auto& server : call->response.servers()) {
+                                    std::cout << " - " << server.ip() << ":" << server.port() << std::endl;
+                                }
+                            } else {
+                                err = std::to_string(call->status.error_code()) + ": " + call->status.error_message();
+                            }
+                        } else {
+                            err = "A client call was deleted";
+                        }
+                        delete call;
+                        break;
+                    }
+                }
+                delete tag_ptr;
+
+                if (!err.empty()) {
+                    throw std::runtime_error(err);
+                }
+            }
+        }
+
+    private:
+        template <class RequestType, class ResponseType>
+        struct AsyncClientCall {
+            RequestType request;
+            ResponseType response;
+            ClientContext context;
+            Status status;
+            std::unique_ptr<ClientAsyncResponseReader<ResponseType>> rpc;
+        };
+
+        struct Tag {
+            void* call;
+            MessageID id;
+        };
+
+        std::unique_ptr<ProxyService::Stub> _stub;
+        CompletionQueue _queue;
+};
+
+void RunProxyClient() {
     std::string proxy_ip;
     std::cout << "Enter proxy server IP Address: ";
     std::cin >> proxy_ip;
-    std::string proxy_address = proxy_ip + ":50051"; 
-    ProxyClient proxy(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
+    std::string proxy_address = proxy_ip + ":50051";    
 
-    proxy.GetAvailableServers();
+    std::string server_address{proxy_address};
+    ProxyClient client{grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials())};
 
-    // Get available servers and select one dynamically
-    Empty request;
-    ServerList response;
-    ClientContext context;
+    std::thread thread{&ProxyClient::AsyncCompleteRPC, &client};
 
-    std::unique_ptr<ProxyService::Stub> proxy_stub = ProxyService::NewStub(grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials()));
-    Status status = proxy_stub->GetAvailableServers(&context, request, &response);
+    client.GetAvailableServers();
 
-    if (!status.ok() || response.servers_size() == 0) {
-        std::cerr << "No available servers found. Exiting..." << std::endl;
-        return 1;
-    }
+    thread.join();
+}
 
-    // Select the first available server (you can implement a better selection strategy)
-    std::string selected_server = response.servers(0).ip() + ":" + std::to_string(response.servers(0).port());
-    std::cout << "Selected server: " << selected_server << std::endl;
+int main(int argc, char** argv) {
+    RunProxyClient();
 
-    // Connect to the selected RemoteGPU server
-    RemoteGPUClient client(grpc::CreateChannel(selected_server, grpc::InsecureChannelCredentials()));
+    std::string selected_server;
+    std::cout << "Enter server IP Address: ";
+    std::cin >> selected_server;
+    selected_server = selected_server + ":50052";
+
+    std::string server_address(selected_server);
+    RemoteGPUClient client(grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials()));
 
     std::string file_name;
     std::cout << "Enter file name: ";
