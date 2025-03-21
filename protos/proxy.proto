@@ -3,17 +3,17 @@ syntax = "proto3";
 package proxy;
 
 service ProxyService {
-  rpc RegisterServer (ServerInfo) returns (RegisterResponse);
+  rpc RegisterServer (ServerInfo) returns (ProxyResponse);
   rpc GetAvailableServers (Empty) returns (ServerList);
+  rpc DeleteServer (ServerInfo) returns (ProxyResponse);
 }
 
 message ServerInfo {
   string ip = 1;
   int32 port = 2;
-  bool available = 3;
 }
 
-message RegisterResponse {
+message ProxyResponse {
   string message = 1;
 }
 

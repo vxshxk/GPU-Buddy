@@ -12,7 +12,7 @@ using grpc::ServerContext;
 using grpc::Status;
 using proxy::ProxyService;
 using proxy::ServerInfo;
-using proxy::RegisterResponse;
+using proxy::ProxyResponse;
 using proxy::Empty;
 using proxy::ServerList;
 
@@ -20,7 +20,7 @@ using namespace grpc;
 using namespace proxy;
 
 enum class MessageID : uint8_t {
-    REGISTER = 0, AVAILABLE = 1
+    REGISTER = 0, AVAILABLE = 1, DELETE = 2
 };
 
 std::map<std::string, ServerInfo> server_registry;
@@ -100,8 +100,8 @@ class ProxyServer {
 
             private:
                 ServerInfo _request;
-                RegisterResponse _response;
-                ServerAsyncResponseWriter<RegisterResponse> _responder;
+                ProxyResponse _response;
+                ServerAsyncResponseWriter<ProxyResponse> _responder;
                 Tag _tag;
         };
 
@@ -124,9 +124,7 @@ class ProxyServer {
                     case CallStatus::PROCESS: {
                         new GetAvailableServersCallData{_service, _queue};
                         for (const auto& entry : server_registry) {
-                            if (entry.second.available()) {
-                                *(_response.add_servers()) = entry.second;
-                            }
+                            *(_response.add_servers()) = entry.second;
                         }
                         _status = CallStatus::FINISH;
                         _responder.Finish(_response, Status::OK, (void*)&_tag);
@@ -145,9 +143,48 @@ class ProxyServer {
                 Tag _tag;
         };
 
+        class DeleteServerCallData : public CallData {
+            public:
+                DeleteServerCallData(ProxyService::AsyncService* service, ServerCompletionQueue* queue)
+                    : CallData{service, queue}, _responder{&_context} {
+                _tag.id = MessageID::DELETE;
+                _tag.call = this;
+                Proceed();
+            }
+
+            void Proceed() override {
+                switch (_status) {
+                    case CallStatus::CREATE: {
+                        _status = CallStatus::PROCESS;
+                        _service->RequestDeleteServer(&_context, &_request, &_responder, _queue, _queue, (void*)&_tag);
+                        break;
+                    }
+                    case CallStatus::PROCESS: {
+                        new DeleteServerCallData{_service, _queue};
+                        std::string key = _request.ip() + ":" + std::to_string(_request.port());
+                        server_registry.erase(key);
+                        _response.set_message("Server deleted successfully!");
+                        _status = CallStatus::FINISH;
+                        _responder.Finish(_response, Status::OK, (void*)&_tag);
+                        break;
+                    }
+                    default: {
+                        delete this;
+                    }
+                }
+            }
+
+            private:
+                ServerInfo _request;
+                ProxyResponse _response;
+                ServerAsyncResponseWriter<ProxyResponse> _responder;
+                Tag _tag;
+        };
+
         void HandleRPCs() {
             new RegisterServerCallData{&_service, _queue.get()};
             new GetAvailableServersCallData{&_service, _queue.get()};
+            new DeleteServerCallData{&_service, _queue.get()};
             void* tag;
             bool ok;
             while (true) {
@@ -162,10 +199,14 @@ class ProxyServer {
                             static_cast<GetAvailableServersCallData*>(tag_ptr->call)->Proceed();
                             break;
                         }
+                        case MessageID::DELETE: {
+                            static_cast<DeleteServerCallData*>(tag_ptr->call)->Proceed();
+                            break;
+                        }
                     }
                 } else {
-                    std::cerr << "Something went wrong" << std::endl;
-                    abort();
+                    std::cout << "Server shutting down" << std::endl;
+                    break;
                 }
             }
         }
