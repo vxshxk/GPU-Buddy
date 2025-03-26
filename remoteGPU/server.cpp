@@ -172,6 +172,8 @@ public:
         _queue->Shutdown();
         this->id = 0;
         index.clear();
+        std::string cleanup = "./cleanup_script.sh";
+        system(cleanup.c_str());
     }
 
     void Run(std::function<void()> shutdown_callback) {
