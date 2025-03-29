@@ -342,33 +342,36 @@ private:
             void Proceed() override {
                 switch (_status) {
                     case CallStatus::CREATE: {
+                        std::cout << "1: " << std::endl;
                         _status = CallStatus::PROCESS;
+                        std::cout << "2: "  << std::endl;
                         _service->RequestExecute(&_context, &_request, &_responder, _queue, _queue, (void*)&_tag);
+                        std::cout << "3: "  << std::endl;
                         break;
                     }
                     case CallStatus::PROCESS: {
+                        std::cout << "4: " << std::endl;
+                    
                         new ExecuteCallData{_service, _queue};
-
+        
                         int cur_id = _request.id();
                         auto it = index.find(cur_id);
-
+        
                         if (it != index.end()) {
                             std::string FilePath = it->second.first;
                             std::string ScriptPath = it->second.second;
                             std::string RunScript = "chmod +x " + ScriptPath + " && bash " + ScriptPath;
                             std::string RunCode = "python -u " + FilePath + " 2>&1";
                             _terminalExecute = RunScript + " && " + RunCode;
-
+        
                             _pipe = popen(_terminalExecute.c_str(), "r");
-
                             if (!_pipe) {
                                 _status = CallStatus::FINISH;
                                 _responder.Finish(Status(grpc::INTERNAL, "Failed to execute."), (void*)&_tag);
                                 return;
                             }
-
                             _status = CallStatus::STREAMING;
-                            Proceed();
+                            ReadNextLine();  
                         } else {
                             _status = CallStatus::FINISH;
                             _responder.Finish(Status(grpc::NOT_FOUND, "File not found."), (void*)&_tag);
@@ -376,16 +379,7 @@ private:
                         break;
                     }
                     case CallStatus::STREAMING: {
-                        char buffer[1024];
-                        while (fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
-                            Output response;
-                            response.set_out(std::string(buffer, strlen(buffer)));
-                            _responder.Write(response, (void*)&_tag);
-                        } else {
-                            pclose(_pipe);
-                            _status = CallStatus::FINISH;
-                            _responder.Finish(Status::OK, (void*)&_tag);
-                        }
+                    
                         break;
                     }
                     default: {
@@ -395,6 +389,21 @@ private:
             }
 
         private:
+            void ReadNextLine() {
+                char buffer[1024];
+                if (_pipe && fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
+                    std::cout << "Streaming Output: " << buffer << std::endl;
+                    Output response;
+                    response.set_out(std::string(buffer, strlen(buffer)));
+                    _responder.Write(response, (void*)&_tag);
+                } else {
+              
+                    pclose(_pipe);
+                    _status = CallStatus::FINISH;
+                    _responder.Finish(grpc::Status::OK, (void*)&_tag);
+                }
+            }
+
             FileID _request;
             Output _response;
             ServerAsyncWriter<Output> _responder;
@@ -422,12 +431,13 @@ private:
                         break;
                     }
                     case ServiceID::EXECUTE: {
+                    
                         static_cast<ExecuteCallData*>(tag_ptr->call)->Proceed();
                         break;
                     }
                 }
             } else {
-                std::cerr << "Server shutting down" << std::endl;
+            
                 break;
             }
         }
