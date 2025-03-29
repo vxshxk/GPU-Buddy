@@ -240,9 +240,9 @@ class RemoteGPUClient {
                     case ServiceID::EXECUTE: {
                         auto* call = static_cast<AsyncClientCall<FileID, Output>*>(tag_ptr->call);
 
-                        if (ok && call->status.ok()) {
-                            std::cout << "Output received:\n" << call->response.out();
-                            call->rpc_stream->Read(&call->response, tag);  
+                        std::cout << "Output received:\n" << call->response.out();
+                        if (ok && call->status.ok()) {                            
+                            call->rpc_stream->Read(&call->response, (void*)tag);  
                         } else {
                             call->rpc_stream->Finish(&call->status, (void*)tag); 
                         }

@@ -377,7 +377,7 @@ private:
                     }
                     case CallStatus::STREAMING: {
                         char buffer[1024];
-                        if (fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
+                        while (fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
                             Output response;
                             response.set_out(std::string(buffer, strlen(buffer)));
                             _responder.Write(response, (void*)&_tag);
