@@ -351,7 +351,7 @@ private:
                     }
                     case CallStatus::PROCESS: {
                         std::cout << "4: " << std::endl;
-                    
+                      
                         new ExecuteCallData{_service, _queue};
         
                         int cur_id = _request.id();
@@ -379,6 +379,7 @@ private:
                         break;
                     }
                     case CallStatus::STREAMING: {
+                        ReadNextLine();
                     
                         break;
                     }
@@ -389,20 +390,21 @@ private:
             }
 
         private:
-            void ReadNextLine() {
-                char buffer[1024];
-                if (_pipe && fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
-                    std::cout << "Streaming Output: " << buffer << std::endl;
-                    Output response;
-                    response.set_out(std::string(buffer, strlen(buffer)));
-                    _responder.Write(response, (void*)&_tag);
-                } else {
-              
-                    pclose(_pipe);
-                    _status = CallStatus::FINISH;
-                    _responder.Finish(grpc::Status::OK, (void*)&_tag);
-                }
+        void ReadNextLine() {
+            char buffer[1024];
+            if (_pipe && fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
+                std::cout << "Streaming Output: " << buffer << std::endl;
+                _response.set_out(std::string(buffer, strlen(buffer)));
+    
+                _responder.Write(_response, (void*)&_tag);
+            } else {
+                std::cout << "No more data to read." << std::endl;
+                if (_pipe) pclose(_pipe);
+                _status = CallStatus::FINISH;
+                _responder.Finish(Status::OK, (void*)&_tag);
             }
+        }
+        
 
             FileID _request;
             Output _response;
@@ -431,13 +433,13 @@ private:
                         break;
                     }
                     case ServiceID::EXECUTE: {
-                    
+                        std::cout << "serviceidexecute: " << std::endl;
                         static_cast<ExecuteCallData*>(tag_ptr->call)->Proceed();
                         break;
                     }
                 }
             } else {
-            
+                std::cerr << "Server shutting down" << std::endl;
                 break;
             }
         }
