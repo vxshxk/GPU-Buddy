@@ -182,20 +182,20 @@ class RemoteGPUClient {
             std::cin >> file_id;
 
             request.set_id(file_id);
-            std::cout << "1: " << std::endl;
+         
             auto* call = new AsyncClientCall<FileID, Output>;
-            std::cout << "2: " << std::endl;
+           
             call->request = request;
-            std::cout << "3: " << std::endl;
+       
             call->rpc_stream = _stub->PrepareAsyncExecute(&call->context, request, &_queue);
-            std::cout << "4: " << std::endl;
-
+         
+            call->rpc_stream->StartCall((void*)call);
             auto* tag = new Tag;
             tag->call = (void*)call;
             tag->id = ServiceID::EXECUTE;
-            std::cout << "5: " << << std::endl;
+          
             call->rpc_stream->Read(&call->response, (void*)tag);
-            std::cout << "exec: " << std::endl;
+          
         }
 
         void AsyncCompleteRPC() {
@@ -241,7 +241,7 @@ class RemoteGPUClient {
                         break;
                     }
                     case ServiceID::EXECUTE: {
-                        std::cout << "executeasync: " << std::endl;
+                       
                         auto* call = static_cast<AsyncClientCall<FileID, Output>*>(tag_ptr->call);
 
                         std::cout << "Output received:\n" << call->response.out();
