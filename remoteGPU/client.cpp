@@ -138,6 +138,33 @@ class RemoteGPUClient {
         std::unique_ptr<RemoteGPU::Stub> _stub;
 };
 
+void Welcome() {
+    std::cout << " __        __  _____   _        ____    ___    __  __   _____ " << std::endl;
+    std::cout << " \\ \\      / / | ____| | |      / ___|  / _ \\  |  \\/  | | ____|" << std::endl;
+    std::cout << "  \\ \\ /\\ / /  |  _|   | |     | |     | | | | | |\\/| | |  _|  " << std::endl;
+    std::cout << "   \\ V  V /   | |___  | |___  | |___  | |_| | | |  | | | |___ " << std::endl;
+    std::cout << "    \\_/\\_/    |_____| |_____|  \\____|  \\___/  |_|  |_| |_____|" << std::endl << std::endl;
+
+    std::cout << "   _______________                         ||*\\_/*|________" << std::endl;
+    std::cout << "  |  ___________  |     .-.     .-.        ||_/-\\_|______  |" << std::endl;
+    std::cout << "  | |           | |    .****. .****.       | |           | |" << std::endl;
+    std::cout << "  | |   0   0   | |    .*****.*****.       | |   0   0   | |" << std::endl;
+    std::cout << "  | |     -     | |     .*********.        | |     -     | |" << std::endl;
+    std::cout << "  | |   |___|   | |      .*******.         | |   |___|   | |" << std::endl;
+    std::cout << "  | |___________| |       .*****.          | |___________| |" << std::endl;
+    std::cout << "  |_____|   |_____|        .***.           |_______________|" << std::endl;
+    std::cout << "    _|__|   |_|_.............*..............._|________|_" << std::endl;
+    std::cout << "   / ********** \\                          / ********** \\" << std::endl;
+    std::cout << " /  ************  \\                      /  ************  \\" << std::endl;
+    std::cout << "--------------------                     -------------------" << std::endl;
+
+    std::cout << "   ____   ____    _   _      ____    _   _   ____    ____   __   __" << std::endl;
+    std::cout << "  / ___| |  _ \\  | | | |    | __ )  | | | | |  _ \\  |  _ \\  \\ \\ / /" << std::endl;
+    std::cout << " | |  _  | |_) | | | | |    |  _ \\  | | | | | | | | | | | |  \\ V / " << std::endl;
+    std::cout << " | |_| | |  __/  | |_| |    | |_)|  | |_| | | |_| | | |_| |   | |  " << std::endl;
+    std::cout << "  \\____| |_|      \\___/     |____/   \\___/  |____/  |____/    |_|  " << std::endl << std::endl;
+}
+
 void RunProxyClient() {
     std::string proxy_ip;
     std::cout << "Enter proxy server IP Address: ";
@@ -184,7 +211,11 @@ void RunClient() {
 }
 
 int main(int argc, char** argv) {
+    Welcome();
+
     RunProxyClient();
+    
     RunClient();
+    
     return 0;
 }
