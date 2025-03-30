@@ -43,12 +43,7 @@ enum class ServiceID : uint8_t { UPLOAD = 0, DOWNLOAD = 1, EXECUTE = 2 };
 const std::string PREFIX_PATH = "../../";
 
 std::atomic<bool> shutdown_flag{false};
-
-std::string GetLocalIPAddress() {
-    const char* env_ip = std::getenv("SERVER_IP");
-    if (env_ip) return std::string(env_ip);
-    return "192.168.1.101"; 
-}
+std::string server_ip;
 
 bool checkGRPCCompatibility() {
     int status = std::system("nvidia-smi > /dev/null 2>&1");
@@ -67,7 +62,7 @@ public:
 
     void Register() {
         ServerInfo request;
-        request.set_ip(GetLocalIPAddress());
+        request.set_ip(server_ip);
         request.set_port(50052);
 
         auto* call = new AsyncClientCall<ServerInfo, ProxyResponse>;
@@ -84,7 +79,7 @@ public:
 
     void DeleteServer() {
         ServerInfo request;
-        request.set_ip(GetLocalIPAddress());
+        request.set_ip(server_ip);
         request.set_port(50052);
 
         auto* call = new AsyncClientCall<ServerInfo, ProxyResponse>;
@@ -177,7 +172,7 @@ public:
     }
 
     void Run(std::function<void()> shutdown_callback) {
-        std::string server_address = GetLocalIPAddress() + ":50052";
+        std::string server_address = server_ip + ":50052";
 
         ServerBuilder builder;
         builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
@@ -342,16 +337,11 @@ private:
             void Proceed() override {
                 switch (_status) {
                     case CallStatus::CREATE: {
-                        std::cout << "1: " << std::endl;
                         _status = CallStatus::PROCESS;
-                        std::cout << "2: "  << std::endl;
                         _service->RequestExecute(&_context, &_request, &_responder, _queue, _queue, (void*)&_tag);
-                        std::cout << "3: "  << std::endl;
                         break;
                     }
-                    case CallStatus::PROCESS: {
-                        std::cout << "4: " << std::endl;
-                      
+                    case CallStatus::PROCESS: {                      
                         new ExecuteCallData{_service, _queue};
         
                         int cur_id = _request.id();
@@ -433,7 +423,6 @@ private:
                         break;
                     }
                     case ServiceID::EXECUTE: {
-                        std::cout << "serviceidexecute: " << std::endl;
                         static_cast<ExecuteCallData*>(tag_ptr->call)->Proceed();
                         break;
                     }
@@ -458,6 +447,9 @@ void SignalHandler(int signal) {
 }
 
 void RunProxyServerClient() {
+    std::cout << "Enter server IP Address: ";
+    std::cin >> server_ip;      
+
     std::string proxy_ip;
     std::cout << "Enter proxy server IP Address: ";
     std::cin >> proxy_ip;

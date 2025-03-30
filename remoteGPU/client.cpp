@@ -122,8 +122,9 @@ class RemoteGPUClient {
             std::unique_ptr<ClientReader<Output>> reader(_stub->Execute(&context, request));
 
             Output output;
+            std::cout << "Output received:\n";
             while (reader->Read(&output)) {
-                std::cout << "Output received:\n" << output.out() << std::endl;
+                std::cout << output.out() << std::endl;
             }
 
             Status status = reader->Finish();
