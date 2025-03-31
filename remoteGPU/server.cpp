@@ -383,9 +383,7 @@ private:
         void ReadNextLine() {
             char buffer[1024];
             if (_pipe && fgets(buffer, sizeof(buffer), _pipe) != nullptr) {
-                std::cout << "Streaming Output: " << buffer << std::endl;
                 _response.set_out(std::string(buffer, strlen(buffer)));
-    
                 _responder.Write(_response, (void*)&_tag);
             } else {
                 std::cout << "No more data to read." << std::endl;

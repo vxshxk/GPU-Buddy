@@ -38,6 +38,7 @@ class ProxyClient {
         ProxyClient(std::shared_ptr<Channel> channel) : _stub{ProxyService::NewStub(channel)} {}
 
         void GetAvailableServers() {
+            available_servers.clear();
             Empty request;
             ClientContext context;
             ServerList response;
@@ -47,15 +48,20 @@ class ProxyClient {
             if (status.ok()) {
                 std::cout << "Available Servers:\n";
                 for (const auto& server : response.servers()) {
+                    std::string server_address = server.ip() + ":" + std::to_string(server.port());
+                    available_servers.push_back(server_address);
                     std::cout << " - " << server.ip() << ":" << server.port() << std::endl;
                 }
             } else {
                 std::cerr << "Error: " << status.error_message() << std::endl;
             }
         }
-
+        const std::vector<std::string>& getAvailableServers() const {
+            return available_servers;
+        }
     private:
         std::unique_ptr<ProxyService::Stub> _stub;
+        std::vector<std::string> available_servers;
 };
 
 class RemoteGPUClient {
@@ -71,15 +77,18 @@ class RemoteGPUClient {
             std::string InputFilePath = PREFIX_PATH + file_name;
             std::vector<std::string> code;
             std::vector<std::string> commands;
-            CodeExtractor::extractPythonCode(InputFilePath, code, commands);
-
+            bool fileExists = CodeExtractor::extractPythonCode(InputFilePath, code, commands);
+            if (!fileExists) {
+                std::cerr << "File does not exist. Please enter a valid file name" << std::endl;
+                return;
+            }
             for (const auto& line : code) request.add_code(line);
             for (const auto& command : commands) request.add_commands(command);
 
             ClientContext context;
             FileID response;
             Status status = _stub->UploadFile(&context, request, &response);
-
+            
             if (status.ok()) {
                 std::cout << "File uploaded successfully! Assigned ID: " << response.id() << std::endl;
             } else {
@@ -165,23 +174,35 @@ void Welcome() {
     std::cout << "  \\____| |_|      \\___/     |____/   \\___/  |____/  |____/    |_|  " << std::endl << std::endl;
 }
 
-void RunProxyClient() {
-    std::string proxy_ip;
-    std::cout << "Enter proxy server IP Address: ";
-    std::cin >> proxy_ip;
-    std::string proxy_address = proxy_ip + ":50051";
-    ProxyClient client{grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials())};
-    client.GetAvailableServers();
-}
+void RunClient(ProxyClient& proxyClient) {
+    const std::vector<std::string>& available_servers = proxyClient.getAvailableServers();
+    if (available_servers.empty()) {
+        std::cerr << "No available servers found. Exiting...\n";
+        return;
+    }
 
-void RunClient() {
+    std::cout << "Available Servers:\n";
+    for (size_t i = 0; i < available_servers.size(); ++i) {
+        std::cout << i + 1 << ". " << available_servers[i] << std::endl;
+    }
+
+    int choice;
     std::string selected_server;
-    std::cout << "Enter server IP Address: ";
-    std::cin >> selected_server;
-    selected_server = selected_server + ":50052";
+    while (true) {
+        std::cout << "Select a server by number: ";
+        std::cin >> choice;
+
+        if (choice >= 1 && choice <= available_servers.size()) {
+            selected_server = available_servers[choice - 1];
+            break;
+        } else {
+            std::cout << "Invalid choice. Please try again.\n";
+        }
+    }
 
     RemoteGPUClient client(grpc::CreateChannel(selected_server, grpc::InsecureChannelCredentials()));
-    int choice;
+
+    int option;
     do {
         std::cout << "\nChoose an option:\n"
                   << "1. Upload File\n"
@@ -189,8 +210,8 @@ void RunClient() {
                   << "3. Execute File\n"
                   << "4. Exit\n"
                   << "Enter choice: ";
-        std::cin >> choice;
-        switch (choice) {
+        std::cin >> option;
+        switch (option) {
             case 1:
                 client.UploadFile();
                 break;
@@ -207,15 +228,39 @@ void RunClient() {
                 std::cout << "Invalid choice. Please try again.\n";
                 break;
         }
-    } while (choice != 4);
+    } while (option != 4);
 }
+void RunProxyClient() {
+    std::string proxy_ip;
+    ProxyClient* proxyClient = nullptr;
+    while (true) {
+        std::cout << "Enter proxy server IP Address: ";
+        std::cin >> proxy_ip;
+        std::string proxy_address = proxy_ip + ":50051";
+        auto channel = grpc::CreateChannel(proxy_address, grpc::InsecureChannelCredentials());
+        std::cout << "Connecting to proxy server at " << proxy_address << "...\n";
+        if (!channel->WaitForConnected(gpr_time_add(
+                gpr_now(GPR_CLOCK_REALTIME),
+                gpr_time_from_seconds(5, GPR_TIMESPAN)))) {
+            std::cerr << "Failed to connect to proxy server. Please try again.\n";
+            continue;
+        }
+
+        std::cout << "Connected successfully!\n";
+        proxyClient = new ProxyClient (channel);
+        proxyClient->GetAvailableServers();
+        break; 
+    }
+    if (proxyClient) {
+        RunClient(*proxyClient);
+    }
+}
+
+
+
 
 int main(int argc, char** argv) {
     Welcome();
-
     RunProxyClient();
-    
-    RunClient();
-    
     return 0;
 }
