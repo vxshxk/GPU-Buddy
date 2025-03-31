@@ -50,7 +50,7 @@ class ProxyClient {
                 for (const auto& server : response.servers()) {
                     std::string server_address = server.ip() + ":" + std::to_string(server.port());
                     available_servers.push_back(server_address);
-                    std::cout << " - " << server.ip() << ":" << server.port() << std::endl;
+                    gpu_names.push_back(server.gpu_name());
                 }
             } else {
                 std::cerr << "Error: " << status.error_message() << std::endl;
@@ -59,9 +59,13 @@ class ProxyClient {
         const std::vector<std::string>& getAvailableServers() const {
             return available_servers;
         }
+        const std::vector<std::string>& getAvailableGPUs() const {
+            return gpu_names;
+        }
     private:
         std::unique_ptr<ProxyService::Stub> _stub;
         std::vector<std::string> available_servers;
+        std::vector<std::string> gpu_names;
 };
 
 class RemoteGPUClient {
@@ -176,6 +180,7 @@ void Welcome() {
 
 void RunClient(ProxyClient& proxyClient) {
     const std::vector<std::string>& available_servers = proxyClient.getAvailableServers();
+    const std::vector<std::string>& gpu_names = proxyClient.getAvailableGPUs();
     if (available_servers.empty()) {
         std::cerr << "No available servers found. Exiting...\n";
         return;
@@ -183,7 +188,7 @@ void RunClient(ProxyClient& proxyClient) {
 
     std::cout << "Available Servers:\n";
     for (size_t i = 0; i < available_servers.size(); ++i) {
-        std::cout << i + 1 << ". " << available_servers[i] << std::endl;
+        std::cout << i + 1 << ". " << available_servers[i]  << " | GPU: " << gpu_names[i] << std::endl;
     }
 
     int choice;

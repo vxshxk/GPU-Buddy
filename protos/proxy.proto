@@ -11,6 +11,7 @@ service ProxyService {
 message ServerInfo {
   string ip = 1;
   int32 port = 2;
+  string gpu_name = 3;
 }
 
 message ProxyResponse {

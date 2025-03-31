@@ -55,7 +55,20 @@ bool checkGRPCCompatibility() {
     status = std::system("which grpc_cpp_plugin > /dev/null 2>&1");
     return status == 0;
 }
+std::string getGPUName() {
+    std::string command = "nvidia-smi --query-gpu=name --format=csv,noheader";
+    std::string gpu_name;
+    char buffer[128];
+    FILE* pipe = popen(command.c_str(), "r");
+    if (!pipe) return "Unknown";
 
+    if (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+        gpu_name = buffer;
+    }
+    pclose(pipe);
+    gpu_name.erase(gpu_name.find_last_not_of("\n\r") + 1);
+    return gpu_name;
+}
 class ProxyServerClient {
 public:
     ProxyServerClient(std::shared_ptr<Channel> channel) : _stub{ProxyService::NewStub(channel)} {}
@@ -64,6 +77,7 @@ public:
         ServerInfo request;
         request.set_ip(server_ip);
         request.set_port(50052);
+        request.set_gpu_name(getGPUName());
 
         auto* call = new AsyncClientCall<ServerInfo, ProxyResponse>;
         call->request = request;

@@ -87,7 +87,7 @@ class ProxyServer {
                         new RegisterServerCallData{_service, _queue};
                         std::string key = _request.ip() + ":" + std::to_string(_request.port());
                         server_registry[key] = _request;
-                        _response.set_message("Server registered successfully!");
+                        _response.set_message("Server registered successfully with GPU: " + _request.gpu_name());
                         _status = CallStatus::FINISH;
                         _responder.Finish(_response, Status::OK, (void*)&_tag);
                         break;
