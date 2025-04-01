@@ -186,7 +186,7 @@ public:
     }
 
     void Run(std::function<void()> shutdown_callback) {
-        std::string server_address = server_ip + ":50052";
+        std::string server_address = "0.0.0.0:50052";
 
         ServerBuilder builder;
         builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
