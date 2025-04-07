@@ -75,10 +75,10 @@ After building the image, run the following command to confirm it was created:
 docker images
 ```
 
-##▶️ Run Docker Containers
+## ▶️ Run Docker Containers
 Run the following containers for each component of the system:
-
-
+   
+   
 🧩 Proxy Server Container
 ```bash
 docker run -it --gpus all -p 50051:50051 --name Proxy_container gpu-virtualization bash
@@ -87,8 +87,8 @@ Now, once innside the container, to run the Proxy server:
 ```bash
 ./run_proxy.sh
 ```
-
-
+   
+   
 🖥️ Server Container
 ```bash
 docker run -it --gpus all -p 50052:50052 --name Server_container gpu-virtualization bash
@@ -97,8 +97,8 @@ Now, once innside the container, to run the Server:
 ```bash
 ./run_server.sh
 ```
-
-
+   
+   
 💻 Client Container (Optional)
 ```bash
 docker run -it --gpus all -p 50053:50053 --name Client_container gpu-virtualization bash
@@ -108,6 +108,7 @@ Now, once innside the container, to run the Server:
 ./run_client.sh
 ```
 
+      
 ✅ Verify Container Status
 
 After running the containers, make sure they are up and running using:
@@ -117,6 +118,7 @@ docker ps
 ```
 ---
 
+      
 ## 📈 Results & Analysis
 
 ### ✅ Key Outcomes
