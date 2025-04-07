@@ -86,6 +86,7 @@ Now, once innside the container, to run the Proxy server:
 ```bash
 ./run_proxy.sh
 ```
+
 🖥️ Server Container
 ```bash
 docker run -it --gpus all -p 50052:50052 --name Server_container gpu-virtualization bash
@@ -94,6 +95,7 @@ Now, once innside the container, to run the Server:
 ```bash
 ./run_server.sh
 ```
+
 💻 Client Container (Optional)
 ```bash
 docker run -it --gpus all -p 50053:50053 --name Client_container gpu-virtualization bash
