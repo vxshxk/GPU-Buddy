@@ -1,4 +1,4 @@
-# GPU-Buddy:Remote GPU Sharing with Virtualization
+# GPU-Buddy: Remote GPU Sharing with Virtualization
 
 ![image](https://github.com/user-attachments/assets/9b44ccfd-9679-4f0d-a81f-27d97018f98b)
 
