@@ -11,7 +11,7 @@ To develop a client-server architecture that allows **multiple clients to share 
 
 ## 📚 Background
 
-Remote GPU access is essential for compute-heavy tasks like machine learning and data analytics. Existing platforms (e.g., Google Colab) are limited in scope. This project implements **NVIDIA MPS**, which enables multiple CUDA processes to **cooperatively** share GPU resources, reducing context-switching and improving utilization.
+Remote GPU access is essential for compute-heavy tasks like machine learning and data analytics. Existing platforms (e.g., Google Colab) are limited in the servers hosted by Google. This project allows emd users to **host thier own GPUs** as well as use the GPUs hosted by others while implementing **NVIDIA MPS**, which enables multiple CUDA processes to **cooperatively** share GPU resources, reducing context-switching and improving utilization.
 
 ---
 ## 🔧 Methodology
