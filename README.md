@@ -36,7 +36,91 @@ Remote GPU access is essential for compute-heavy tasks like machine learning and
 - **Build Tools**: CMake
 
 ---
+## 🧰 Prerequisites
+Make sure you are using Linux.
 
+- **Docker for Linux**: [Install Docker Engine on Linux](https://docs.docker.com/engine/install/)
+- **NVIDIA Container Toolkit** *(if using GPUs)*: [Install Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+
+To verify installation:
+
+```bash
+docker --version
+nvidia-smi
+```
+
+## 📦 Getting Started
+
+First, clone the main repository (which includes the Dockerfile):
+
+```bash
+git clone https://github.com/vxshxk/GPU-Buddy.git
+cd GPU-Buddy
+```
+
+Alternatively, if you don't wanna develop, and just be an end user, download the Dockerfile and follow the next steps in the same directory.
+
+## 🐳 Docker Setup
+
+### 🔧 Build the Docker Image
+
+Inside the project directory, run:
+
+```bash
+docker build -t gpu-virtualization .
+```
+Verify Docker Image:
+
+After building the image, run the following command to confirm it was created:
+
+```bash
+docker images
+```
+
+## ▶️ Run Docker Containers
+Run the following containers for each component of the system:
+   
+   
+🧩 Proxy Server Container
+```bash
+docker run -it --gpus all -p 50051:50051 --name Proxy_container gpu-virtualization bash
+```
+Now, once innside the container, to run the Proxy server:
+```bash
+./run_proxy.sh
+```
+   
+   
+🖥️ Server Container
+```bash
+docker run -it --gpus all -p 50052:50052 --name Server_container gpu-virtualization bash
+```
+Now, once innside the container, to run the Server:
+```bash
+./run_server.sh
+```
+   
+   
+💻 Client Container (Optional)
+```bash
+docker run -it --gpus all -p 50053:50053 --name Client_container gpu-virtualization bash
+```
+Now, once innside the container, to run the Server:
+```bash
+./run_client.sh
+```
+
+      
+✅ Verify Container Status
+
+After running the containers, make sure they are up and running using:
+
+```bash
+docker ps
+```
+---
+
+      
 ## 📈 Results & Analysis
 
 ### ✅ Key Outcomes
