@@ -58,7 +58,7 @@ git clone https://github.com/vxshxk/GPU-Buddy.git
 cd GPU-Buddy
 ```
 
-Alternatively, if you don't wanna develop, and just be an end user: Download the Dockerfile and follow the next steps in the same directory.
+Alternatively, if you don't wanna develop, and just be an end user, download the Dockerfile and follow the next steps in the same directory.
 
 ## 🐳 Docker Setup
 
