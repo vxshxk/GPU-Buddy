@@ -83,7 +83,11 @@ Run the following containers for each component of the system:
    
 🧩 Proxy Server Container
 ```bash
-docker run -it --gpus all -p 50051:50051 --name Proxy_container gpu-virtualization bash
+docker run --gpus all  --runtime=nvidia \
+    --privileged -it \
+    --device=/dev/dxg \
+    --volume /usr/lib/wsl:/usr/lib/wsl:ro \
+   -p 50052:50052 --name Proxy_container gpu-virtualization bash
 ```
 Now, once innside the container, to run the Proxy server:
 ```bash
